@@ -1,9 +1,23 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, createAction } from '@reduxjs/toolkit'
 
-const initialState = {
-    currentUser: null
+// State
+interface IAuthState {
+    currentUser: string;
 }
+const initialState = { currentUser: "" } as IAuthState;
 
-const authReducer = createReducer(initialState, (builder) => {});
+// Actions
+export const login = createAction<string>("LOGIN");
+export const logout = createAction("LOGOUT");
+
+// Reducer
+const authReducer = createReducer(initialState, (builder) => {
+    builder.addCase(login, (state, action) => {
+       state.currentUser = action.payload;
+    })
+    .addCase(logout, (state) => {
+        state.currentUser = "";
+     });
+});
 
 export default authReducer;
