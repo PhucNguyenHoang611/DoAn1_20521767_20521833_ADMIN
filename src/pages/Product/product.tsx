@@ -1,11 +1,11 @@
 import { Box } from '@mui/material'
 
-const Dashboard = () => {
+const Product = () => {
     return (
         <Box display="flex" width="100%" height="100%">
-            Dashboard
+            Product
         </Box>
     )
 }
 
-export default Dashboard;
+export default Product;
