@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Typography, IconButton } from '@mui/material'
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar'
-import { ArrowRightCircleIcon, Bars3BottomLeftIcon, HomeIcon, CircleStackIcon } from '@heroicons/react/24/outline'
+import { Sidebar, Menu, SubMenu, MenuItem, useProSidebar } from 'react-pro-sidebar'
+import { User } from '@/redux/reducers/auth_reducer'
+import {
+    ArrowRightCircleIcon,
+    Bars3BottomLeftIcon,
+    HomeIcon,
+    CircleStackIcon,
+    ArrowRightOnRectangleIcon,
+    CubeIcon,
+    InboxArrowDownIcon,
+    UserGroupIcon,
+    UserCircleIcon,
+    ShoppingCartIcon,
+    ReceiptPercentIcon } from '@heroicons/react/24/outline'
 
 interface SideBarProps {
-    currentUser: string;
+    currentUser: User;
     isNonMobile: boolean;
     isSidebarOpen: boolean;
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -46,20 +58,27 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
 
     useEffect(() => {
         if (currentUser){
-            switch(currentUser) {
-                case "ADMIN":
+            switch(currentUser.privilege) {
+                case 0:
                     setMenuList([
                         {
-                            title: "Bảng điều khiển",
+                            title: "Khách hàng",
                             to: "/",
-                            icon: <HomeIcon className="h-7 w-7 text-secondary-0" />,
+                            icon: <UserCircleIcon className="h-7 w-7 text-secondary-0" />,
                             selected: selected,
                             setSelected: setSelected
                         },
                         {
-                            title: "Sản phẩm",
-                            to: "/product",
-                            icon: <CircleStackIcon className="h-7 w-7 text-secondary-0" />,
+                            title: "Nhân viên",
+                            to: "/",
+                            icon: <UserGroupIcon className="h-7 w-7 text-secondary-0" />,
+                            selected: selected,
+                            setSelected: setSelected
+                        },
+                        {
+                            title: "Mã giảm giá",
+                            to: "/",
+                            icon: <ReceiptPercentIcon className="h-7 w-7 text-secondary-0" />,
                             selected: selected,
                             setSelected: setSelected
                         }
@@ -85,7 +104,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                 <Sidebar backgroundColor="#F5F3F2" style={{ border: 0 }}>
                     {isNonMobile ?
                         (
-                            <Box width="100%" height="auto" textAlign="right">
+                            <Box width="100%" height="5%" textAlign="right">
                                 <IconButton onClick={() => {
                                         collapseSidebar();
                                         setSidebarCollapse(!sidebarCollapse);
@@ -96,7 +115,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         )
                         :
                         (
-                            <Box width="100%" height="10%" textAlign="right">
+                            <Box width="100%" height="5%" textAlign="right">
                                 <IconButton onClick={() => {
                                         setIsSidebarOpen(true);
                                     }}>
@@ -105,8 +124,8 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                             </Box>
                         )
                     }
-                    <Box display="flex" flexDirection="row" width="100%" height="auto" sx={{ minWidth: "max-content", paddingRight: ".9rem", marginBottom: "2rem" }}>
-                        <img src="./src/assets/nguyenshome_logo.png" alt="logo" className="h-20 w-15"/>
+                    <Box display="flex" flexDirection="row" width="100%" height="15%" sx={{ minWidth: "max-content", paddingRight: ".9rem", marginBottom: "0rem" }}>
+                        <img src="src/assets/nguyenshome_logo.png" alt="logo" className="h-20 w-15"/>
                         <Box width="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                             <Box width="100%" textAlign="center" sx={{ color: "#A67F78", fontSize: "1.2rem", lineHeight: "2rem", fontWeight: 500, whiteSpace: "nowrap"}}>
                                 NGUYEN'S HOME
@@ -119,6 +138,68 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         </Box>
                     </Box>
                     <Menu style={{ height: "auto"}}>
+                        <MenuItem
+                            active={selected === "Bảng điều khiển"}
+                            component={<Link to="/" />}
+                            icon={<HomeIcon className="h-7 w-7 text-secondary-0" />}
+                            style={{ textAlign: "center" }}
+                            onClick={() => setSelected("Bảng điều khiển")}>
+                            <Typography variant="h6" sx={{
+                                color: "#716864",
+                                fontWeight: "normal"
+                            }}>
+                                Bảng điều khiển
+                            </Typography>
+                        </MenuItem>
+                        <SubMenu label={
+                                <Typography variant="h6" sx={{
+                                    textAlign: "center",
+                                    color: "#716864",
+                                    fontWeight: "normal"
+                                }}>
+                                    Danh mục
+                                </Typography>}
+                            icon={<CircleStackIcon className="h-7 w-7 text-secondary-0" />}>
+                            <MenuItem
+                                active={selected === "Sản phẩm"}
+                                component={<Link to="/product" />}
+                                icon={<CubeIcon  className="h-7 w-7 text-secondary-0" />}
+                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}
+                                onClick={() => setSelected("Sản phẩm")}>
+                                <Typography variant="h6" sx={{
+                                    color: "#716864",
+                                    fontWeight: "normal"
+                                }}>
+                                    Sản phẩm
+                                </Typography>
+                            </MenuItem>
+                            <MenuItem
+                                active={selected === "Nhập kho"}
+                                component={<Link to="/" />}
+                                icon={<InboxArrowDownIcon  className="h-7 w-7 text-secondary-0" />}
+                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}
+                                onClick={() => setSelected("Nhập kho")}>
+                                <Typography variant="h6" sx={{
+                                    color: "#716864",
+                                    fontWeight: "normal"
+                                }}>
+                                    Nhập kho
+                                </Typography>
+                            </MenuItem>
+                        </SubMenu>
+                        <MenuItem
+                            active={selected === "Đơn hàng"}
+                            component={<Link to="/" />}
+                            icon={<ShoppingCartIcon className="h-7 w-7 text-secondary-0" />}
+                            style={{ textAlign: "center" }}
+                            onClick={() => setSelected("Đơn hàng")}>
+                            <Typography variant="h6" sx={{
+                                color: "#716864",
+                                fontWeight: "normal"
+                            }}>
+                                Đơn hàng
+                            </Typography>
+                        </MenuItem>
                         {menuList.map((data) => (
                             <Item
                                 title={data.title}
@@ -127,6 +208,18 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 selected={data.selected}
                                 setSelected={data.setSelected} />
                         ))}
+                    </Menu>
+                    <Menu style={{ position: "absolute", bottom: 0, width: "100%", height: "auto" }}>
+                        <MenuItem
+                            icon={<ArrowRightOnRectangleIcon  className="h-7 w-7 text-secondary-0" />}
+                            style={{ textAlign: "center" }}>
+                            <Typography variant="h6" sx={{
+                                color: "#716864",
+                                fontWeight: "normal"
+                            }}>
+                                Đăng xuất
+                            </Typography>
+                        </MenuItem>
                     </Menu>
                 </Sidebar>
             )}

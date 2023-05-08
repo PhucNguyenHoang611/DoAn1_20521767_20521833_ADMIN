@@ -16,6 +16,14 @@ body,
     font-family: "EB Garamond", serif;
 }
 
+.ant-spin {
+    position: static !important;
+}
+
+.ant-spin-dot .ant-spin-dot-item {
+    background-color: #32435F !important;
+}
+
 .ps-menu-button:hover {
     background-color: #A69F9B !important;
 }
@@ -35,4 +43,8 @@ body,
 
 .ps-menuitem-root .ps-active .ps-menu-label .MuiTypography-root {
     color: white !important;
+}
+
+.ps-submenu-expand-icon {
+    color: #716864 !important;
 }
