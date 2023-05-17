@@ -33,7 +33,7 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
                     </IconButton>
                 </Box>
                 {/* Avatar */}
-                <Tooltip title={currentUser.firstName + " " + currentUser.lastName} sx={{ position: "absolute", right: "1rem", width: "max-content", height: "100%" }}>
+                <Tooltip title={currentUser.lastName + " " + currentUser.firstName} sx={{ position: "absolute", right: "1rem", width: "max-content", height: "100%" }}>
                     <Box display="flex" width="100%" height="100%" alignItems="center">
                         {isNonMobile && (
                             <Typography 
@@ -43,7 +43,7 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
                                     fontWeight: "normal",
                                     marginRight: ".5rem"
                                 }}>
-                                {currentUser.firstName + " " + currentUser.lastName}
+                                {currentUser.lastName + " " + currentUser.firstName}
                             </Typography>
                         )}
                         <IconButton
@@ -99,7 +99,7 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
                             fontWeight: "bold",
                             px: 2
                         }}>
-                        {currentUser.firstName + " " + currentUser.lastName}
+                        {currentUser.lastName + " " + currentUser.firstName}
                     </Typography>
                     {(currentUser.privilege === 0) && (
                         <Typography

@@ -24,6 +24,7 @@ interface SideBarProps {
 }
 
 interface MenuItemProps {
+    key: string;
     title: string;
     to: string;
     icon: React.ReactNode;
@@ -62,6 +63,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                 case 0:
                     setMenuList([
                         {
+                            key: "1",
                             title: "Khách hàng",
                             to: "/",
                             icon: <UserCircleIcon className="h-7 w-7 text-secondary-0" />,
@@ -69,6 +71,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                             setSelected: setSelected
                         },
                         {
+                            key: "2",
                             title: "Nhân viên",
                             to: "/",
                             icon: <UserGroupIcon className="h-7 w-7 text-secondary-0" />,
@@ -76,6 +79,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                             setSelected: setSelected
                         },
                         {
+                            key: "3",
                             title: "Mã giảm giá",
                             to: "/",
                             icon: <ReceiptPercentIcon className="h-7 w-7 text-secondary-0" />,
@@ -202,6 +206,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         </MenuItem>
                         {menuList.map((data) => (
                             <Item
+                                key={data.key}
                                 title={data.title}
                                 to={data.to}
                                 icon={data.icon}
