@@ -13,3 +13,6 @@ export const getLoginBody = (email: string, password: string) => ({
     staffEmail: email,
     staffPassword: password
 });
+
+// Product
+export const GET_ALL_PRODUCTS = "/products/getAllProducts";

@@ -30,7 +30,7 @@ const App = () => {
             
             const currentUser: User = {
                 token: token,
-                id: user.data._id,
+                id: user.data.data._id,
                 firstName: user.data.data.staffFirstName,
                 lastName: user.data.data.staffLastName,
                 email: user.data.data.staffEmail,
@@ -55,7 +55,7 @@ const App = () => {
             const loggedInUser = JSON.parse(user);
 
             const today = new Date();
-            const expiredDate = loggedInUser.expiredDate;
+            const expiredDate = new Date(loggedInUser.expiredDate);
 
             if (today < expiredDate) {
                 getUser(loggedInUser.token, expiredDate);
@@ -66,7 +66,8 @@ const App = () => {
         } else {
             navigate("/login");
         }
-    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>

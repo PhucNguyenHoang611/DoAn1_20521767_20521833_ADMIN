@@ -50,11 +50,11 @@ const Login = () => {
                 apiEndpoints.getAccessToken(token)
             );
             const expiredDate = new Date();
-            expiredDate.setDate(expiredDate.getDate() + 30);
+            expiredDate.setDate(expiredDate.getDate() + 3);
             
             const currentUser: User = {
                 token: token,
-                id: user.data._id,
+                id: user.data.data._id,
                 firstName: user.data.data.staffFirstName,
                 lastName: user.data.data.staffLastName,
                 email: user.data.data.staffEmail,
@@ -67,7 +67,7 @@ const Login = () => {
             }
 
             dispatch(login(currentUser));
-            localStorage.setItem("currentUser", JSON.stringify({ ...currentUser, ...{ expiredDate: expiredDate } }));
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
             navigate("/");
         } catch (error) {
             console.log(error);
