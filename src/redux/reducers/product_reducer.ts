@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 // State

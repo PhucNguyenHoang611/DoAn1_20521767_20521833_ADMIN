@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import {  Menu, MenuItem, Box, AppBar, Toolbar, IconButton, Tooltip, Avatar, Typography, Divider } from '@mui/material'
+import {  Menu, MenuItem, Box, AppBar, Toolbar, Button, IconButton, Tooltip, Avatar, Typography, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { ArrowRightOnRectangleIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/outline'
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 
-import { User } from '@/redux/reducers/auth_reducer'
+import { User, logout } from '@/redux/reducers/auth_reducer'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
     currentUser: User;
@@ -13,7 +15,10 @@ interface HeaderProps {
 }
 
 const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: HeaderProps) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [openDialog, setOpenDialog] = useState(false);
     const isOpenMenu = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,6 +28,16 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    }
+
+    const handleLogout = () => {
+        dispatch(logout());
+        localStorage.clear();
+        navigate("/login");
+    }
 
     return (
         <AppBar position="static" sx={{ boxShadow: "none" }}>
@@ -129,12 +144,29 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
                         </Typography>
                     )}
                     <Divider sx={{ mx: 1, my: 1 }} />
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={() => setOpenDialog(true)}>
                         <ArrowRightOnRectangleIcon  className="h-7 w-7 mr-2 text-secondary-0" />
                         Đăng xuất
                     </MenuItem>
                 </Menu>
             </Toolbar>
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="dialog-title">
+                    <DialogTitle id="dialog-title">
+                        Đăng xuất
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ whiteSpace: "nowrap" }}>
+                            Bạn có chắc chắn muốn đăng xuất ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog}>Hủy bỏ</Button>
+                        <Button  onClick={handleLogout}>Xác nhận</Button>
+                    </DialogActions>
+            </Dialog>
         </AppBar>
     )
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Box, Typography, IconButton } from '@mui/material'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Box, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
 import { Sidebar, Menu, SubMenu, MenuItem, useProSidebar } from 'react-pro-sidebar'
-import { User } from '@/redux/reducers/auth_reducer'
+import { User, logout } from '@/redux/reducers/auth_reducer'
 import {
     ArrowRightCircleIcon,
     Bars3BottomLeftIcon,
@@ -14,7 +14,9 @@ import {
     UserGroupIcon,
     UserCircleIcon,
     ShoppingCartIcon,
-    ReceiptPercentIcon } from '@heroicons/react/24/outline'
+    ReceiptPercentIcon, 
+    EllipsisHorizontalCircleIcon } from '@heroicons/react/24/outline'
+import { useDispatch } from 'react-redux'
 
 interface SideBarProps {
     currentUser: User;
@@ -28,18 +30,17 @@ interface MenuItemProps {
     title: string;
     to: string;
     icon: React.ReactNode;
-    selected: string;
-    setSelected: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Item = ({ title, to, icon, selected, setSelected }: MenuItemProps) => {
+const Item = ({ title, to, icon }: MenuItemProps) => {
+    const location = useLocation();
+
     return (
         <MenuItem
-            active={selected === title}
+            active={location.pathname === to}
             component={<Link to={to} />}
             icon={icon}
-            style={{ textAlign: "center" }}
-            onClick={() => setSelected(title)}>
+            style={{ textAlign: "center" }}>
             <Typography variant="h6" sx={{
                 color: "#716864",
                 fontWeight: "normal"
@@ -51,10 +52,13 @@ const Item = ({ title, to, icon, selected, setSelected }: MenuItemProps) => {
 }
 
 const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: SideBarProps) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch();
     const { collapseSidebar } = useProSidebar();
     const [sidebarCollapse, setSidebarCollapse] = useState(true);
-    const [selected, setSelected] = useState("Bảng điều khiển");
     const [menuList, setMenuList] = useState<MenuItemProps[]>([]);
+    const [openDialog, setOpenDialog] = useState(false);
     isSidebarOpen = isNonMobile ? true : !isSidebarOpen;
 
     useEffect(() => {
@@ -65,26 +69,20 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         {
                             key: "1",
                             title: "Khách hàng",
-                            to: "/",
-                            icon: <UserCircleIcon className="h-7 w-7 text-secondary-0" />,
-                            selected: selected,
-                            setSelected: setSelected
+                            to: "/customer",
+                            icon: <UserCircleIcon className="h-7 w-7 text-secondary-0" />
                         },
                         {
                             key: "2",
                             title: "Nhân viên",
-                            to: "/",
-                            icon: <UserGroupIcon className="h-7 w-7 text-secondary-0" />,
-                            selected: selected,
-                            setSelected: setSelected
+                            to: "/staff",
+                            icon: <UserGroupIcon className="h-7 w-7 text-secondary-0" />
                         },
                         {
                             key: "3",
                             title: "Mã giảm giá",
-                            to: "/",
-                            icon: <ReceiptPercentIcon className="h-7 w-7 text-secondary-0" />,
-                            selected: selected,
-                            setSelected: setSelected
+                            to: "/discount",
+                            icon: <ReceiptPercentIcon className="h-7 w-7 text-secondary-0" />
                         }
                     ]);
                     break;
@@ -92,10 +90,20 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                     break;
             }
         }
-    }, [currentUser, selected]);
+    }, [currentUser]);
 
     if (!isNonMobile && !sidebarCollapse) {
         setSidebarCollapse(true);
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    }
+
+    const handleLogout = () => {
+        dispatch(logout());
+        localStorage.clear();
+        navigate("/login");
     }
 
     return (
@@ -143,11 +151,10 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                     </Box>
                     <Menu style={{ height: "auto"}}>
                         <MenuItem
-                            active={selected === "Bảng điều khiển"}
+                            active={location.pathname === "/"}
                             component={<Link to="/" />}
                             icon={<HomeIcon className="h-7 w-7 text-secondary-0" />}
-                            style={{ textAlign: "center" }}
-                            onClick={() => setSelected("Bảng điều khiển")}>
+                            style={{ textAlign: "center" }}>
                             <Typography variant="h6" sx={{
                                 color: "#716864",
                                 fontWeight: "normal"
@@ -165,11 +172,10 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 </Typography>}
                             icon={<CircleStackIcon className="h-7 w-7 text-secondary-0" />}>
                             <MenuItem
-                                active={selected === "Sản phẩm"}
+                                active={location.pathname === "/product"}
                                 component={<Link to="/product" />}
                                 icon={<CubeIcon  className="h-7 w-7 text-secondary-0" />}
-                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}
-                                onClick={() => setSelected("Sản phẩm")}>
+                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
                                 <Typography variant="h6" sx={{
                                     color: "#716864",
                                     fontWeight: "normal"
@@ -178,11 +184,10 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 </Typography>
                             </MenuItem>
                             <MenuItem
-                                active={selected === "Nhập kho"}
-                                component={<Link to="/" />}
+                                active={location.pathname === "/import"}
+                                component={<Link to="/import" />}
                                 icon={<InboxArrowDownIcon  className="h-7 w-7 text-secondary-0" />}
-                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}
-                                onClick={() => setSelected("Nhập kho")}>
+                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
                                 <Typography variant="h6" sx={{
                                     color: "#716864",
                                     fontWeight: "normal"
@@ -190,13 +195,24 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                     Nhập kho
                                 </Typography>
                             </MenuItem>
+                            <MenuItem
+                                active={location.pathname === "/other"}
+                                component={<Link to="/other" />}
+                                icon={<EllipsisHorizontalCircleIcon className="h-7 w-7 text-secondary-0" />}
+                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
+                                <Typography variant="h6" sx={{
+                                    color: "#716864",
+                                    fontWeight: "normal"
+                                }}>
+                                    Khác
+                                </Typography>
+                            </MenuItem>
                         </SubMenu>
                         <MenuItem
-                            active={selected === "Đơn hàng"}
-                            component={<Link to="/" />}
+                            active={location.pathname === "/order"}
+                            component={<Link to="/order" />}
                             icon={<ShoppingCartIcon className="h-7 w-7 text-secondary-0" />}
-                            style={{ textAlign: "center" }}
-                            onClick={() => setSelected("Đơn hàng")}>
+                            style={{ textAlign: "center" }}>
                             <Typography variant="h6" sx={{
                                 color: "#716864",
                                 fontWeight: "normal"
@@ -209,15 +225,13 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 key={data.key}
                                 title={data.title}
                                 to={data.to}
-                                icon={data.icon}
-                                selected={data.selected}
-                                setSelected={data.setSelected} />
+                                icon={data.icon} />
                         ))}
                     </Menu>
                     <Menu style={{ position: "absolute", bottom: 0, width: "100%", height: "auto" }}>
                         <MenuItem
                             icon={<ArrowRightOnRectangleIcon  className="h-7 w-7 text-secondary-0" />}
-                            style={{ textAlign: "center" }}>
+                            style={{ textAlign: "center" }} onClick={() => setOpenDialog(true)}>
                             <Typography variant="h6" sx={{
                                 color: "#716864",
                                 fontWeight: "normal"
@@ -228,6 +242,23 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                     </Menu>
                 </Sidebar>
             )}
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="dialog-title">
+                    <DialogTitle id="dialog-title">
+                        Đăng xuất
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ whiteSpace: "nowrap" }}>
+                            Bạn có chắc chắn muốn đăng xuất ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog}>Hủy bỏ</Button>
+                        <Button  onClick={handleLogout}>Xác nhận</Button>
+                    </DialogActions>
+            </Dialog>
         </Box>
     )
 }
