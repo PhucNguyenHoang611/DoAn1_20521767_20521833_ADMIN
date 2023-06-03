@@ -112,5 +112,13 @@ export const getSupplierId = (id: string) => ({
 // Color
 export const GET_ALL_COLORS = "/colors/getAllColors";
 
+export const GET_COLOR = (id: string) => `/colors/getColorById/${id}`;
+
+export const getColorId = (id: string) => ({
+    params: {
+        colorId: id
+    }
+});
+
 // Attachment
 export const PREVIEW_ATTACHMENT = (id: string) => `/attachments/previewAttachment/${id}`;

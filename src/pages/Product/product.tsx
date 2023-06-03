@@ -6,7 +6,7 @@ import { Box, Typography, Button, IconButton, Tooltip,
     Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
     Snackbar, 
     Alert} from '@mui/material'
-import { DataGrid, GridColDef, GridRowSelectionModel, GridCellParams, GridRowId } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@mui/x-data-grid'
 import {
     PlusCircleIcon,
     EyeIcon,
@@ -18,12 +18,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
 import { getAllProds } from '@/redux/reducers/product_reducer'
 import AddOrEditProductModal from '@/components/modals/product/AddOrEditProductModal'
+import ProductDetailsModal from '@/components/modals/product/ProductDetailsModal'
 
 const tableColumns: GridColDef[] = [
     {
         field: "id",
-        headerName: "ID",
-        width: 220
+        headerName: "Mã sản phẩm",
+        width: 250
     },
     {
         field: "name",
@@ -61,10 +62,15 @@ interface RenderCellProps {
 }
 const RenderCell = ({ productId }: RenderCellProps) => {
     const dispatch = useDispatch();
+    const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
     const [openEditProductModal, setOpenEditProductModal] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const currentToken = useSelector((state: RootState) => state.auth.currentUser.token);
+
+    const handleGetProductDetails = () => {
+        setOpenProductDetailsModal(true);
+    }
 
     const handleEditProduct = () => {
         setOpenEditProductModal(true);
@@ -110,7 +116,7 @@ const RenderCell = ({ productId }: RenderCellProps) => {
     return (
         <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
             <Tooltip title="Chi tiết">
-                <IconButton size="small" sx={{ backgroundColor: "#32435F" }}>
+                <IconButton size="small" sx={{ backgroundColor: "#32435F" }} onClick={handleGetProductDetails}>
                     <EyeIcon className="w-5 h-5 text-white" />
                 </IconButton>
             </Tooltip>
@@ -124,6 +130,7 @@ const RenderCell = ({ productId }: RenderCellProps) => {
                     <TrashIcon className="w-5 h-5 text-white" />
                 </IconButton>
             </Tooltip>
+            <ProductDetailsModal productId={productId} isModalOpen={openProductDetailsModal} setIsModalOpen={setOpenProductDetailsModal} />
             <AddOrEditProductModal token={currentToken} productId={productId} isModalOpen={openEditProductModal} setIsModalOpen={setOpenEditProductModal} />
             <Dialog
                 open={openDialog}
@@ -162,8 +169,6 @@ const Product = () => {
     const [openCreateProductModal, setOpenCreateProductModal] = useState(false);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const allProds = useSelector((state: RootState) => state.product.allProds);
-
-    const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
 
     const getAllProducts = async () => {
         try {
@@ -276,16 +281,11 @@ const Product = () => {
                         }
                     }}
                     pageSizeOptions={[10]}
-                    checkboxSelection
                     disableRowSelectionOnClick
                     sx={{ fontSize: "1rem" }}
                     slots={{
                         noRowsOverlay: NoRowsOverlay
-                    }}
-                    onRowSelectionModelChange={(newRowSelectionModel) => {
-                        setRowSelectionModel(newRowSelectionModel);
-                    }}
-                    rowSelectionModel={rowSelectionModel} />
+                    }} />
             </Box>
             <AddOrEditProductModal token={currentUser.token} productId={""} isModalOpen={openCreateProductModal} setIsModalOpen={setOpenCreateProductModal} />
         </Box>
