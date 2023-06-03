@@ -14,6 +14,7 @@ import ImagesUploader from "./ImagesUploader"
 const ColorsList = ({ productId, done, colorsList, setColorsList, imagesList, filesList, setFilesList, setImageIDsToDelete }: any) => {
     const dispatch = useDispatch();
     const [allColors, setAllColors] = useState<any[]>([]);
+    const [doneTemp, setDoneTemp] = useState(false);
     const [imageURLsList, setImageURLsList] = useState<any[]>([]);
     const [URLsList, setURLsList] = useState<any[]>([{ imagesURLs: [] }]);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
@@ -72,6 +73,8 @@ const ColorsList = ({ productId, done, colorsList, setColorsList, imagesList, fi
                     ...prevFilesList,
                     { key: indexProdColor, productColorId: productColor.productColorId, files: [] }
                 ]);
+
+                setDoneTemp(true);
             }
               
         } catch (error: any) {
@@ -103,19 +106,21 @@ const ColorsList = ({ productId, done, colorsList, setColorsList, imagesList, fi
 
     useEffect(() => {
         if (currentUser) {
-            if (imagesList.length > 0) {
-                if (done) {
-                    getAllImageURLs();
-                }
-            }
-
             if (all_Colors) {
                 setAllColors(all_Colors);
             } else {
                 getColors();
             }
         }
-    }, [currentUser, all_Colors, imagesList, done]);
+    }, [currentUser, all_Colors]);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (done && !doneTemp) {
+                getAllImageURLs();
+            }
+        }
+    }, [currentUser, done, doneTemp]);
 
     return (
         <Box width="100%">

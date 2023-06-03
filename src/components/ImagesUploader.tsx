@@ -134,8 +134,8 @@ const ImagesUploader = ({
                                     left: "50%",
                                     transform: "translate(-50%, -50%)",
                                     backgroundColor: "white",
-                                    width: "max-content",
-                                    height: "max-content" }}>
+                                    width: "auto",
+                                    height: "auto" }}>
                                     <img src={viewImageURL} />
                                 </Box>
                             </Modal>
@@ -171,8 +171,9 @@ const ImagesUploader = ({
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    backgroundColor: "white" }}>
-                    <img className="object-cover" src={previewImage} />
+                    width: "auto",
+                    height: "auto" }}>
+                        <img src={previewImage} />
                 </Box>
             </Modal>
         </Box>

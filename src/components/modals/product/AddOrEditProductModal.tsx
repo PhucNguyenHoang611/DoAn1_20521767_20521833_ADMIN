@@ -18,7 +18,7 @@ interface ModalProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Product {
+export interface Product {
 	productName: string;
 	productDescription: string;
 	productPrice: number;
@@ -351,7 +351,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen }
 			getSubcategories();
 			getSuppliers();
 			if (productId) {
-				if(!done) {
+				if (!done) {
 					getProduct(productId.toString());
 				}
 			}
@@ -377,7 +377,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen }
 			setImageIDsToDelete([]);
 			setDone(false);
 		}
-	}, [isModalOpen, productId, done]);
+	}, [isModalOpen, productId]);
 
 	return (
 		<React.Fragment>
@@ -391,7 +391,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen }
 					transform: "translate(-50%, -50%)",
 					backgroundColor: "white",
 					padding: "1.5rem",
-					width: "50%",
+					width: "60%",
 					height: "90%",
 					overflowY: "auto" }}>
 					<Box width="100%" height="10%" display="flex" alignItems="center" justifyContent="space-between">
