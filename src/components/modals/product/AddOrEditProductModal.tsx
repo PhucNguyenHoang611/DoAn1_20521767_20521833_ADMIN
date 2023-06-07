@@ -16,6 +16,7 @@ interface ModalProps {
 	productId: GridRowId;
 	isModalOpen: boolean;
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpenSnackbar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface Product {
@@ -31,7 +32,7 @@ export interface Product {
 	productWeight: number;
 }
 
-const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen }: ModalProps) => {
+const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, setOpenSnackbar }: ModalProps) => {
 	const dispatch = useDispatch();
 	let tempArray: any[] = [];
 
@@ -165,6 +166,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen }
 		// console.log(colorsList);
 		// console.log(imagesList);
 		// console.log(filesList);
+		setOpenSnackbar(true);
 
 		try {
 			const product = await mainApi.post(
@@ -243,6 +245,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen }
 		// console.log(filesList);
 		// console.log(imageIDsToDelete)
 		// console.log(imageIDsToDelete);
+		setOpenSnackbar(true);
 
 		try {
 			await mainApi.put(

@@ -15,6 +15,15 @@ export const getLoginBody = (email: string, password: string) => ({
     staffPassword: password
 });
 
+// Staff
+export const GET_STAFF = (id: string) => `/staffs/getStaffById/${id}`;
+
+export const getStaffId = (id: string) => ({
+    params: {
+        staffId: id
+    }
+});
+
 // Product
 export const GET_ALL_PRODUCTS = "/products/getAllProducts";
 
@@ -119,6 +128,19 @@ export const getColorId = (id: string) => ({
         colorId: id
     }
 });
+
+// Import
+export const GET_ALL_IMPORTS = "/imports/getAllImports";
+
+export const GET_IMPORT = (id: string) => `/imports/getImportById/${id}`;
+
+export const CONFIRM_IMPORT = (id: string) => `/imports/confirmImport/${id}`;
+
+export const CANCEL_IMPORT = (id: string) => `/imports/cancelImport/${id}`;
+
+// Import Details
+export const GET_DETAILS_FOR_IMPORT = (id: string) => `/imports/getDetailsForImport/${id}`;
+
 
 // Attachment
 export const PREVIEW_ATTACHMENT = (id: string) => `/attachments/previewAttachment/${id}`;

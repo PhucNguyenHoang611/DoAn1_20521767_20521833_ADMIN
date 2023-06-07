@@ -14,6 +14,7 @@ import Login from '@/pages/Login/login'
 import Dashboard from '@/pages/Dashboard/dashboard'
 import Product from '@/pages/Product/product'
 import NotFound from '@/pages/NotFound/notfound'
+import Import from '@/pages/Import/import'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const App = () => {
                             <>
                                 <Route index element={<Dashboard />} />
                                 <Route path="product" element={<Product />} />
+                                <Route path="import" element={<Import />} />
                             </>
                         )}
                     </Route>

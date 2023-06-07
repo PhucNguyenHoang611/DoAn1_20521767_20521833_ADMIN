@@ -195,7 +195,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                     Nhập kho
                                 </Typography>
                             </MenuItem>
-                            <MenuItem
+                            {/* <MenuItem
                                 active={location.pathname === "/other"}
                                 component={<Link to="/other" />}
                                 icon={<EllipsisHorizontalCircleIcon className="h-7 w-7 text-secondary-0" />}
@@ -206,7 +206,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 }}>
                                     Khác
                                 </Typography>
-                            </MenuItem>
+                            </MenuItem> */}
                         </SubMenu>
                         <MenuItem
                             active={location.pathname === "/order"}
