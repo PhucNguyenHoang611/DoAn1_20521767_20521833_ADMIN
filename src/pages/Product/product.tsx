@@ -65,7 +65,10 @@ const RenderCell = ({ productId }: RenderCellProps) => {
     const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
     const [openEditProductModal, setOpenEditProductModal] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+
+    const [openEditSnackbar, setOpenEditSnackbar] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
+
     const currentToken = useSelector((state: RootState) => state.auth.currentUser.token);
 
     const handleGetProductDetails = () => {
@@ -113,6 +116,11 @@ const RenderCell = ({ productId }: RenderCellProps) => {
         setOpenSnackbar(false);
     }
 
+
+    const handleCloseEditSnackbar = () => {
+        setOpenEditSnackbar(false);
+    }
+
     return (
         <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
             <Tooltip title="Chi tiết">
@@ -131,7 +139,7 @@ const RenderCell = ({ productId }: RenderCellProps) => {
                 </IconButton>
             </Tooltip>
             <ProductDetailsModal productId={productId} isModalOpen={openProductDetailsModal} setIsModalOpen={setOpenProductDetailsModal} />
-            <AddOrEditProductModal token={currentToken} productId={productId} isModalOpen={openEditProductModal} setIsModalOpen={setOpenEditProductModal} />
+            <AddOrEditProductModal token={currentToken} productId={productId} isModalOpen={openEditProductModal} setIsModalOpen={setOpenEditProductModal} setOpenSnackbar={setOpenEditSnackbar} />
             <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
@@ -149,9 +157,15 @@ const RenderCell = ({ productId }: RenderCellProps) => {
                         <Button onClick={handleDeleteProduct}>Xác nhận</Button>
                     </DialogActions>
             </Dialog>
-            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
                     Xóa sản phẩm thành công
+                </Alert>
+            </Snackbar>
+
+            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openEditSnackbar} autoHideDuration={2000} onClose={handleCloseEditSnackbar}>
+                <Alert onClose={handleCloseEditSnackbar} severity="success" sx={{ width: "100%" }}>
+                    Chỉnh sửa sản phẩm thành công
                 </Alert>
             </Snackbar>
         </Box>
@@ -169,6 +183,7 @@ const Product = () => {
     const [openCreateProductModal, setOpenCreateProductModal] = useState(false);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const allProds = useSelector((state: RootState) => state.product.allProds);
+    const [openAddSnackbar, setOpenAddSnackbar] = useState(false);
 
     const getAllProducts = async () => {
         try {
@@ -241,6 +256,10 @@ const Product = () => {
         setOpenCreateProductModal(true);
     }
 
+    const handleCloseAddSnackbar = () => {
+        setOpenAddSnackbar(false);
+    }
+
     useEffect(() => {
         if (currentUser) {
             if (allProds) {
@@ -287,7 +306,13 @@ const Product = () => {
                         noRowsOverlay: NoRowsOverlay
                     }} />
             </Box>
-            <AddOrEditProductModal token={currentUser.token} productId={""} isModalOpen={openCreateProductModal} setIsModalOpen={setOpenCreateProductModal} />
+            <AddOrEditProductModal token={currentUser.token} productId={""} isModalOpen={openCreateProductModal} setIsModalOpen={setOpenCreateProductModal} setOpenSnackbar={setOpenAddSnackbar} />
+
+            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openAddSnackbar} autoHideDuration={2000} onClose={handleCloseAddSnackbar}>
+                <Alert onClose={handleCloseAddSnackbar} severity="success" sx={{ width: "100%" }}>
+                    Thêm sản phẩm thành công
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
