@@ -177,6 +177,7 @@ const NoRowsOverlay = () => {
 };
 
 const Product = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [tableRows, setTableRows] = useState<any[]>([]);
     const dispatch = useDispatch();
     const [allProducts, setAllProducts] = useState();
@@ -186,6 +187,7 @@ const Product = () => {
     const [openAddSnackbar, setOpenAddSnackbar] = useState(false);
 
     const getAllProducts = async () => {
+        setIsLoading(true);
         try {
             const productsList = await mainApi.get(
                 apiEndpoints.GET_ALL_PRODUCTS
@@ -224,6 +226,7 @@ const Product = () => {
             })
         );
         setTableRows(rows);
+        setIsLoading(false);
     }
 
     const getCategory = async (id: string) => {
@@ -272,7 +275,7 @@ const Product = () => {
     }, [currentUser, allProds]);
 
     useEffect(() => {
-        
+
     }, [allProducts]);
 
     return (
@@ -290,6 +293,7 @@ const Product = () => {
             </Box>
             <Box width="100%" height="80%" className="px-7 md:px-10">
                 <DataGrid
+                    loading={isLoading}
                     rows={tableRows}
                     columns={tableColumns}
                     initialState={{

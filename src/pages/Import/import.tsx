@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import { mainApi } from '@/api/main_api'
 import * as apiEndpoints from '@/api/api_endpoints'
 import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getImports } from "@/redux/reducers/import_reducer";
 
 const Import = () => {
     const [currentTab, setCurrentTab] = useState(0);
@@ -15,9 +16,12 @@ const Import = () => {
     const [tempArray, setTempArray] = useState([]);
     const [tableRows, setTableRows] = useState<any[]>([]);
     const [filter, setFilter] = useState("Tất cả");
+    const [isLoading, setIsLoading] = useState(false);
     const currentToken = useSelector((state: RootState) => state.auth.currentUser.token);
+    const dispatch = useDispatch();
 
     const getAllImports = async () => {
+        setIsLoading(true);
         try {
             const importsList = await mainApi.get(
                 apiEndpoints.GET_ALL_IMPORTS,
@@ -47,6 +51,8 @@ const Import = () => {
             })
         );
         setTableRows(rows);
+        setIsLoading(false);
+        dispatch(getImports(false));
     }
 
     const getStaff = async (id: string) => {
@@ -98,6 +104,7 @@ const Import = () => {
                     hidden={currentTab !== 0}
                     className="w-full h-[85%]">
                         <ImportsListTab
+                            isLoading={isLoading}
                             filter={filter}
                             setFilter={setFilter}
                             tableRows={tableRows}
@@ -110,7 +117,8 @@ const Import = () => {
                     aria-labelledby="import-tabpanel"
                     hidden={currentTab !== 1}
                     className="w-full h-[85%]">
-                        <ImportTab />
+                        <ImportTab
+                            getAllImports={getAllImports} />
                 </div>
             </Box>
         </Box>

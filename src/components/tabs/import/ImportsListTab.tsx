@@ -3,12 +3,15 @@
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridCellParams, GridRowId } from '@mui/x-data-grid'
 import { useEffect, useState } from "react";
-import { mainApi } from '@/api/main_api'
+import { baseURL, mainApi } from '@/api/main_api'
 import * as apiEndpoints from '@/api/api_endpoints'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { CheckIcon, EyeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import ImportDetailsModal from "@/components/modals/import/ImportDetailsModal";
+
+import axios from 'axios';
+import { getImports } from "@/redux/reducers/import_reducer";
 
 const tableColumns: GridColDef[] = [
     {
@@ -55,7 +58,9 @@ const RenderCell = ({ importId }: RenderCellProps) => {
     const [openCancelSnackbar, setOpenCancelSnackbar] = useState(false);
 
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const getImp = useSelector((state: RootState) => state.import.getImport);
     const [imp, setImp] = useState<any>();
+    const dispatch = useDispatch();
 
     const getImport = async () => {
         try {
@@ -72,32 +77,40 @@ const RenderCell = ({ importId }: RenderCellProps) => {
 
     const handleConfirmImport = async () => {
         setOpenConfirmSnackbar(true);
-
-        // try {
-        //     await mainApi.put(
-        //         apiEndpoints.CONFIRM_IMPORT(importId.toString()),
-        //         apiEndpoints.getAccessToken(currentUser.token)
-        //     );
-        // } catch (error: any) {
-        //     console.log(error);
-        // }
+        
+        try {
+            await axios({
+                method: "PUT",
+                url: `${baseURL}/imports/confirmImport/${importId.toString()}`,
+                headers: {
+                    Authorization: "Bearer " + currentUser.token
+                }
+            });
+        } catch (error: any) {
+            console.log(error);
+        }
 
         setOpenConfirmDialog(false);
+        dispatch(getImports(true));
     }
 
     const handleCancelImport = async () => {
         setOpenCancelSnackbar(true);
 
-        // try {
-        //     await mainApi.put(
-        //         apiEndpoints.CANCEL_IMPORT(importId.toString()),
-        //         apiEndpoints.getAccessToken(currentUser.token)
-        //     );
-        // } catch (error: any) {
-        //     console.log(error);
-        // }
+        try {
+            await axios({
+                method: "PUT",
+                url: `${baseURL}/imports/cancelImport/${importId.toString()}`,
+                headers: {
+                    Authorization: "Bearer " + currentUser.token
+                }
+            });
+        } catch (error: any) {
+            console.log(error);
+        }
 
         setOpenCancelDialog(false);
+        dispatch(getImports(true));
     }
 
     const handleCloseConfirmDialog = () => {
@@ -119,6 +132,12 @@ const RenderCell = ({ importId }: RenderCellProps) => {
             getImport();
         }
     }, [importId]);
+
+    useEffect(() => {
+        if (getImp) {
+            getImport();
+        }
+    }, [getImp]);
 
     return (
         <Box width="100%" height="100%" display="flex" justifyContent="start" alignItems="center">
@@ -198,14 +217,21 @@ const NoRowsOverlay = () => {
     return <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">Không có dữ liệu</Box>;
 };
 
-const ImportsListTab = ({ filter, setFilter, tableRows, getAllImports }: any) => {
+const ImportsListTab = ({ isLoading, filter, setFilter, tableRows, getAllImports }: any) => {
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const getImports = useSelector((state: RootState) => state.import.getImport);
 
     useEffect(() => {
         if (currentUser) {
             getAllImports();
         }
     }, [currentUser]);
+
+    useEffect(() => {
+        if (getImports) {
+            getAllImports();
+        }
+    }, [getImports]);
 
     return (
         <Box width="100%" height="100%">
@@ -261,6 +287,7 @@ const ImportsListTab = ({ filter, setFilter, tableRows, getAllImports }: any) =>
             </Box>
             <Box width="100%" height="90%" sx={{ mt: 2 }}>
                 <DataGrid
+                    loading={isLoading}
                     rows={tableRows}
                     columns={tableColumns}
                     initialState={{

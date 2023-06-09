@@ -5,6 +5,7 @@ import categoryReducer from './reducers/category_reducer'
 import subcategoryReducer from './reducers/subcategory_reducer'
 import supplierReducer from './reducers/supplier_reducer'
 import colorReducer from './reducers/color_reducer'
+import importReducer from './reducers/import_reducer'
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         category: categoryReducer,
         subcategory: subcategoryReducer,
         supplier: supplierReducer,
-        color: colorReducer
+        color: colorReducer,
+        import: importReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
