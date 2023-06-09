@@ -132,7 +132,14 @@ export const getColorId = (id: string) => ({
 // Import
 export const GET_ALL_IMPORTS = "/imports/getAllImports";
 
+export const CREATE_IMPORT = "/imports/createImport";
+
 export const GET_IMPORT = (id: string) => `/imports/getImportById/${id}`;
+
+export const getImportBody = (staffId: string, importDate: Date) => ({
+    staffId: staffId,
+    importDate: importDate
+});
 
 export const CONFIRM_IMPORT = (id: string) => `/imports/confirmImport/${id}`;
 
@@ -141,6 +148,15 @@ export const CANCEL_IMPORT = (id: string) => `/imports/cancelImport/${id}`;
 // Import Details
 export const GET_DETAILS_FOR_IMPORT = (id: string) => `/imports/getDetailsForImport/${id}`;
 
+export const CREATE_IMPORT_DETAILS = "/imports/createImportDetail";
+
+export const getImportDetailsBody = (importId: string, productId: string, supplierId: string, productColorId: string, productQuantity: number) => ({
+    importId: importId,
+    productId: productId,
+    supplierId: supplierId,
+    productColorId: productColorId,
+    productQuantity: productQuantity
+});
 
 // Attachment
 export const PREVIEW_ATTACHMENT = (id: string) => `/attachments/previewAttachment/${id}`;
