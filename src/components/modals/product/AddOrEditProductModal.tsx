@@ -22,14 +22,14 @@ interface ModalProps {
 export interface Product {
 	productName: string;
 	productDescription: string;
-	productPrice: number;
+	productPrice: string;
 	productCategoryId: string;
 	productSubcategoryId: string;
 	productSupplierId: string;
-	productLength: number;
-	productWidth: number;
-	productHeight: number;
-	productWeight: number;
+	productLength: string;
+	productWidth: string;
+	productHeight: string;
+	productWeight: string;
 }
 
 const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, setOpenSnackbar }: ModalProps) => {
@@ -48,14 +48,14 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 	const [product, setProduct] = useState<Product>({
 		productName: "",
 		productDescription: "",
-		productPrice: 0,
+		productPrice: "0",
 		productCategoryId: "",
 		productSubcategoryId: "",
 		productSupplierId: "",
-		productLength: 0,
-		productWidth: 0,
-		productHeight: 0,
-		productWeight: 0 });
+		productLength: "0",
+		productWidth: "0",
+		productHeight: "0",
+		productWeight: "0" });
 			
 	const { register, handleSubmit } = useForm<Product>();
 
@@ -166,6 +166,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 		// console.log(colorsList);
 		// console.log(imagesList);
 		// console.log(filesList);
+
 		setOpenSnackbar(true);
 
 		try {
@@ -245,6 +246,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 		// console.log(filesList);
 		// console.log(imageIDsToDelete)
 		// console.log(imageIDsToDelete);
+
 		setOpenSnackbar(true);
 
 		try {
@@ -362,14 +364,14 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 			setProduct({
 				productName: "",
 				productDescription: "",
-				productPrice: 0,
+				productPrice: "0",
 				productCategoryId: "",
 				productSubcategoryId: "",
 				productSupplierId: "",
-				productLength: 0,
-				productWidth: 0,
-				productHeight: 0,
-				productWeight: 0
+				productLength: "0",
+				productWidth: "0",
+				productHeight: "0",
+				productWeight: "0"
 			});
 			setCategories([]);
 			setSubcategories([]);
@@ -499,14 +501,15 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 									InputProps={{
 										inputProps: {
 											min: 1,
-											max: 100000000000
+											max: 100000000000,
+											step: 1
 										}
 									}}
 									onChange={(event) => {
 										setProduct((product: Product) => {
 											const updatedProduct: Product = {
 												...product,
-												productPrice: event.target.value ? parseInt(event.target.value) : 0
+												productPrice: event.target.value
 											};
 
 											return updatedProduct;
@@ -551,7 +554,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 											setProduct((product: Product) => {
 												const updatedProduct: Product = {
 													...product,
-													productLength: event.target.value ? parseFloat(event.target.value) : 0
+													productLength: event.target.value
 												};
 
 												return updatedProduct;
@@ -573,7 +576,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 											setProduct((product: Product) => {
 												const updatedProduct: Product = {
 													...product,
-													productWidth: event.target.value ? parseFloat(event.target.value) : 0
+													productWidth: event.target.value
 												};
 
 												return updatedProduct;
@@ -595,7 +598,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 											setProduct((product: Product) => {
 												const updatedProduct: Product = {
 													...product,
-													productHeight: event.target.value ? parseFloat(event.target.value) : 0
+													productHeight: event.target.value
 												};
 
 												return updatedProduct;
@@ -617,7 +620,7 @@ const AddOrEditProductModal = ({ token, productId, isModalOpen, setIsModalOpen, 
 											setProduct((product: Product) => {
 												const updatedProduct: Product = {
 													...product,
-													productWeight: event.target.value ? parseFloat(event.target.value) : 0
+													productWeight: event.target.value
 												};
 
 												return updatedProduct;

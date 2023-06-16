@@ -277,7 +277,7 @@ const AddItemModal = ({ tableRows, isModalOpen, setIsModalOpen }: any) => {
 								</Box>
 
                                 <Box width="100%" sx={{ mb: 2 }}>
-                                    <TextField fullWidth type="number" autoComplete="off" {...register("productQuantity")} required label="Số lượng" placeholder="Nhập số lượng sản phẩm" value={currentItem?.productQuantity}
+                                    <TextField fullWidth type="number" autoComplete="off" {...register("productQuantity")} required label="Số lượng" placeholder="Nhập số lượng sản phẩm" value={currentItem?.productQuantity.toString()}
                                         InputProps={{
                                             inputProps: {
                                                 min: 1
