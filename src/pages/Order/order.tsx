@@ -1,14 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mainApi } from '@/api/main_api'
+import { mainApi, baseURL } from '@/api/main_api'
 import * as apiEndpoints from '@/api/api_endpoints'
-import { Box, IconButton, MenuItem, TextField, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, MenuItem, Snackbar, TextField, Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { DataGrid, GridCellParams, GridColDef, GridRowId } from '@mui/x-data-grid';
-import { CheckIcon, EyeIcon, TruckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, CheckIcon, EyeIcon, InboxArrowDownIcon, TruckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import OrderDetailsModal from '@/components/modals/order/OrderDetailsModal';
+import axios from 'axios';
+import CancelOrderModal from '@/components/modals/order/CancelOrderModal';
+import { getOrders } from '@/redux/reducers/import_reducer';
 
 const filtersList: any[] = [
     {
@@ -87,9 +90,14 @@ interface RenderCellProps {
     orderId: GridRowId;
 }
 const RenderCell = ({ orderId }: RenderCellProps) => {
+    const dispatch = useDispatch();
     const [currentOrder, setCurrentOrder] = useState<any>();
     const [openOrderDetailsModal, setOpenOrderDetailsModal] = useState(false);
+    const [openCancelOrderModal, setOpenCancelOrderModal] = useState(false);
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const [openConfirmSnackbar, setOpenConfirmSnackbar] = useState(false);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const getOrd = useSelector((state: RootState) => state.import.getOrder);
 
     const getOrder = async () => {
         try {
@@ -103,11 +111,67 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
         }
     }
 
-    useEffect(() => {
-        if (!currentOrder) {
-            getOrder();
+    const handleUpdateOrderStatus = async (stt: string) => {
+        if (stt === "Đã xác nhận") {
+            setOpenConfirmSnackbar(true);
+            setOpenConfirmDialog(false);
         }
-    }, [orderId]);
+
+        let staffID = "";
+
+        if (currentOrder.orderStatus === "Đặt hàng")
+            staffID = currentUser.id;
+        else
+            staffID = currentOrder.staffId;
+
+        try {
+            const data = apiEndpoints.getUpdateOrderStatusBody(staffID, stt, "");
+
+            await axios({
+                method: "PUT",
+                url: `${baseURL}/orders/updateOrderStatus/${orderId.toString()}`,
+                headers: {
+                    Authorization: "Bearer " + currentUser.token
+                },
+                data: data
+            });
+        } catch (error: any) {
+            console.log(error);
+        }
+
+        dispatch(getOrders(true));
+    }
+
+    const handleCompleteOrder = async () => {
+        try {
+            const data = apiEndpoints.getCompleteOrderBody(new Date());
+
+            await axios({
+                method: "PUT",
+                url: `${baseURL}/orders/completeOrder/${orderId.toString()}`,
+                headers: {
+                    Authorization: "Bearer " + currentUser.token
+                },
+                data: data
+            });
+        } catch (error: any) {
+            console.log(error);
+        }
+
+        dispatch(getOrders(true));
+    }
+
+    const handleCloseConfirmDialog = () => {
+        setOpenConfirmDialog(false);
+    }
+
+    const handleCloseConfirmSnackbar = () => {
+        setOpenConfirmSnackbar(false);
+    }
+
+    useEffect(() => {
+        getOrder();
+    }, [orderId, getOrd]);
 
     return (
         <Box width="100%" height="100%" display="flex" justifyContent="start" alignItems="center">
@@ -122,36 +186,39 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
                 <>
                     {currentOrder?.orderStatus === "Đặt hàng" && (
                         <Tooltip title="Xác nhận">
-                            <IconButton size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }}>
-                                <TruckIcon className="w-5 h-5 text-white" />
+                            <IconButton onClick={() => setOpenConfirmDialog(true)} size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }}>
+                                <InboxArrowDownIcon className="w-5 h-5 text-white" />
                             </IconButton>
                         </Tooltip>
                     )}
                     {currentOrder?.orderStatus === "Đã xác nhận" && (
                         <Tooltip title="Vận chuyển">
-                            <IconButton size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }}>
+                            <IconButton onClick={() => handleUpdateOrderStatus("Đang vận chuyển")} size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }}>
                                 <TruckIcon className="w-5 h-5 text-white" />
                             </IconButton>
                         </Tooltip>
                     )}
                     {(currentOrder?.orderStatus === "Đặt hàng" || currentOrder?.orderStatus === "Đã xác nhận") && (
-                        <Tooltip title="Hủy đơn hàng">
-                            <IconButton size="small" sx={{ backgroundColor: "#DE5656" }}>
-                                <XMarkIcon className="w-5 h-5 text-white" />
-                            </IconButton>
-                        </Tooltip>
+                        <>
+                            <Tooltip title="Hủy đơn hàng">
+                                <IconButton onClick={() => setOpenCancelOrderModal(true)} size="small" sx={{ backgroundColor: "#DE5656" }}>
+                                    <XMarkIcon className="w-5 h-5 text-white" />
+                                </IconButton>
+                            </Tooltip>
+                            <CancelOrderModal currentOrder={currentOrder} isModalOpen={openCancelOrderModal} setIsModalOpen={setOpenCancelOrderModal} />
+                        </>
                     )}
                     
                     {currentOrder?.orderStatus === "Đang vận chuyển" && (
                         <>
                             <Tooltip title="Hoàn tất">
-                                <IconButton size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }}>
+                                <IconButton onClick={handleCompleteOrder} size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }}>
                                     <CheckIcon className="w-5 h-5 text-white" />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Bị trả lại">
-                                <IconButton size="small" sx={{ backgroundColor: "#DE5656" }}>
-                                    <XMarkIcon className="w-5 h-5 text-white" />
+                                <IconButton onClick={() => handleUpdateOrderStatus("Bị trả lại")} size="small" sx={{ backgroundColor: "#DE5656" }}>
+                                    <ArrowPathIcon className="w-5 h-5 text-white" />
                                 </IconButton>
                             </Tooltip>
                         </>
@@ -159,51 +226,29 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
                 </>
             )}
 
-            {/* <Dialog
-                open={openConfirmDialog}
-                onClose={handleCloseConfirmDialog}
-                aria-labelledby="dialog-title">
-                    <DialogTitle id="dialog-title">
-                        Xác nhận yêu cầu nhập kho
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText sx={{ whiteSpace: "nowrap" }}>
-                            Bạn muốn xác nhận yêu cầu nhập kho ?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseConfirmDialog}>Hủy bỏ</Button>
-                        <Button onClick={handleConfirmImport}>Xác nhận</Button>
-                    </DialogActions>
-            </Dialog>
             <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openConfirmSnackbar} autoHideDuration={2000} onClose={handleCloseConfirmSnackbar}>
                 <Alert onClose={handleCloseConfirmSnackbar} severity="success" sx={{ width: "100%" }}>
-                    Xác nhận yêu cầu thành công
+                    Xác nhận đơn hàng thành công
                 </Alert>
             </Snackbar>
 
             <Dialog
-                open={openCancelDialog}
-                onClose={handleCloseCancelDialog}
+                open={openConfirmDialog}
+                onClose={handleCloseConfirmDialog}
                 aria-labelledby="dialog-title">
                     <DialogTitle id="dialog-title">
-                        Từ chối yêu cầu nhập kho
+                        Xác nhận đơn hàng
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText sx={{ whiteSpace: "nowrap" }}>
-                            Bạn muốn từ chối yêu cầu nhập kho ?
+                            Bạn muốn xác nhận đơn hàng này ?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseCancelDialog}>Hủy bỏ</Button>
-                        <Button onClick={handleCancelImport}>Xác nhận</Button>
+                        <Button onClick={handleCloseConfirmDialog}>Hủy bỏ</Button>
+                        <Button onClick={() => handleUpdateOrderStatus("Đã xác nhận")}>Xác nhận</Button>
                     </DialogActions>
             </Dialog>
-            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openCancelSnackbar} autoHideDuration={2000} onClose={handleCloseCancelSnackbar}>
-                <Alert onClose={handleCloseCancelSnackbar} severity="success" sx={{ width: "100%" }}>
-                    Đã từ chối yêu cầu
-                </Alert>
-            </Snackbar> */}
         </Box>
     )
 }
@@ -213,12 +258,14 @@ const NoRowsOverlay = () => {
 };
 
 const Order = () => {
+    const dispatch = useDispatch();
     const [filter, setFilter] = useState("Tất cả");
     const [isLoading, setIsLoading] = useState(false);
     const [allOrders, setAllOrders] = useState<any[]>([]);
     const [tempArray, setTempArray] = useState([]);
     const [tableRows, setTableRows] = useState<any[]>([]);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+    const getOrder = useSelector((state: RootState) => state.import.getOrder);
 
     const getAllOrders = async () => {
         setIsLoading(true);
@@ -260,6 +307,7 @@ const Order = () => {
 
         setTableRows(rows);
         setIsLoading(false);
+        dispatch(getOrders(false));
     }
 
     const getCustomer = async (id: string) => {
@@ -312,6 +360,12 @@ const Order = () => {
             }
         }
     }, [filter]);
+
+    useEffect(() => {
+        if (getOrder) {
+            getAllOrders();
+        }
+    }, [getOrder]);
 
     return (
         <Box display="flex" flexDirection="column" width="100%" height="100%" className="overflow-auto">

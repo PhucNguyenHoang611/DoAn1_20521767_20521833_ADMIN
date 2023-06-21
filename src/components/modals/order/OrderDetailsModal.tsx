@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { mainApi } from '@/api/main_api'
 import * as apiEndpoints from '@/api/api_endpoints'
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const tableColumns: GridColDef[] = [
     {
@@ -53,6 +55,8 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
 
     const [tableRows, setTableRows] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const getOrder = useSelector((state: RootState) => state.import.getOrder);
+
 
     const getCustomer = async () => {
         try {
@@ -189,7 +193,7 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
             setPayment(null);
             setTotalPrice(0);
         }
-    }, [isModalOpen]);
+    }, [isModalOpen, getOrder]);
 
     return (
         <React.Fragment>
@@ -365,6 +369,31 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
                                     )}
                                 </Box>
                             </Box>
+
+                            {currentOrder?.orderStatus === "Đã hoàn tất" && (
+                                <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                    <Box width="20%" sx={{ mr: 4 }}>
+                                        <Typography sx={{
+                                                fontWeight: "medium",
+                                                fontSize: "1.1rem",
+                                                color: "black",
+                                                whiteSpace: "nowrap",
+                                                textAlign: "right"
+                                            }}>
+                                                Ngày hoàn tất:
+                                        </Typography>
+                                    </Box>
+                                    <Box width="80%">
+                                        <Typography sx={{
+                                                fontSize: "1.1rem",
+                                                color: "black",
+                                                whiteSpace: "nowrap"
+                                            }}>
+                                                {new Date(currentOrder?.orderCompleteDay).toLocaleDateString()}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            )}
 
                             {staff && (
                                 <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>

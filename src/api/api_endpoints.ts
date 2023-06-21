@@ -176,10 +176,16 @@ export const GET_ORDER_ITEMS_FOR_ORDERS = (id: string) => `/orders/getOrderItems
 
 export const UPDATE_ORDER_STATUS = (id: string) => `/orders/updateOrderStatus/${id}`;
 
+export const COMPLETE_ORDER = (id: string) => `/orders/completeOrder/${id}`;
+
 export const getUpdateOrderStatusBody = (staffId: string, orderStatus: string, cancelReason: string) => ({
     staffId: staffId,
     orderStatus: orderStatus,
     cancelReason: cancelReason
+});
+
+export const getCompleteOrderBody = (orderCompleteDay: Date) => ({
+    orderCompleteDay: orderCompleteDay
 });
 
 // Payment
