@@ -5,13 +5,17 @@ import { createReducer, createAction } from '@reduxjs/toolkit'
 interface IImportState {
     importItems: any[];
     getImport: boolean;
+    getOrder: boolean;
 }
-const initialState = { importItems: [], getImport: false } as IImportState;
+const initialState = { importItems: [], getImport: false, getOrder: false } as IImportState;
 
 // Actions
 export const getAllImportItems = createAction<any[]>("GET_ALL_ITEMS");
 
 export const getImports = createAction<boolean>("GET_ALL_IMPORTS");
+
+export const getOrders = createAction<boolean>("GET_ALL_ORDERS");
+
 
 // Reducer
 const importReducer = createReducer(initialState, (builder) => {
@@ -21,7 +25,11 @@ const importReducer = createReducer(initialState, (builder) => {
 
     builder.addCase(getImports, (state, action) => {
         state.getImport = action.payload;
-     });
+    });
+
+    builder.addCase(getOrders, (state, action) => {
+        state.getOrder = action.payload;
+    });
 });
 
 export default importReducer;

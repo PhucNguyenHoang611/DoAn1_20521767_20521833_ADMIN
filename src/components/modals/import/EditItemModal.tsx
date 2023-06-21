@@ -116,7 +116,7 @@ const EditItemModal = ({ itemIndex, isModalOpen, setIsModalOpen }: any) => {
                                         </Box>
                                     </Box>
                                     <Box width="60%">
-                                        <TextField fullWidth type="number" {...register("quantity")} autoComplete="off" required label="Số lượng" value={quantity}
+                                        <TextField fullWidth type="number" {...register("quantity")} autoComplete="off" required label="Số lượng" value={quantity.toString()}
                                             InputProps={{
                                                 inputProps: {
                                                     min: 1

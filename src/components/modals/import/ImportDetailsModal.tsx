@@ -294,7 +294,7 @@ const ImportDetailsModal = ({ token, importId, isModalOpen, setIsModalOpen }: Mo
                                 <Box width="80%">
                                     {currentImport?.importStatus === "Chờ xác nhận" && (
                                         <Typography sx={{
-                                                fontWeight: "medium",
+                                                fontWeight: "bold",
                                                 fontSize: "1.1rem",
                                                 color: "#273449",
                                                 whiteSpace: "nowrap"
@@ -304,7 +304,7 @@ const ImportDetailsModal = ({ token, importId, isModalOpen, setIsModalOpen }: Mo
                                     )}
                                     {currentImport?.importStatus === "Đã xác nhận" && (
                                         <Typography sx={{
-                                                fontWeight: "medium",
+                                                fontWeight: "bold",
                                                 fontSize: "1.1rem",
                                                 color: "#A67F78",
                                                 whiteSpace: "nowrap"
@@ -314,7 +314,7 @@ const ImportDetailsModal = ({ token, importId, isModalOpen, setIsModalOpen }: Mo
                                     )}
                                     {currentImport?.importStatus === "Đã hủy" && (
                                         <Typography sx={{
-                                                fontWeight: "medium",
+                                                fontWeight: "bold",
                                                 fontSize: "1.1rem",
                                                 color: "#DE5656",
                                                 whiteSpace: "nowrap"

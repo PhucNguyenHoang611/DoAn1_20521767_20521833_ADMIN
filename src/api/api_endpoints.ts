@@ -24,6 +24,13 @@ export const getStaffId = (id: string) => ({
     }
 });
 
+// Customer
+export const GET_CUSTOMER = (id: string) => `/customers/getCustomerById/${id}`;
+
+// Customer Address
+export const GET_CUSTOMER_ADDRESS = (id: string) => `/addresses/getAddressById/${id}`;
+
+
 // Product
 export const GET_ALL_PRODUCTS = "/products/getAllProducts";
 
@@ -43,7 +50,7 @@ export const getProductId = (id: string) => ({
     }
 });
 
-export const getProductBody = (name: string, description: string, price: number, category: string, subcategory: string, supplier: string) => ({
+export const getProductBody = (name: string, description: string, price: string, category: string, subcategory: string, supplier: string) => ({
     productName: name,
     productDescription: description,
     productPrice: price,
@@ -65,6 +72,8 @@ export const DELETE_PRODUCT_IMAGE = (id: string) => `/products/deleteProductImag
 // Product Color
 export const GET_ALL_PRODUCT_COLORS = (id: string) => `/products/getAllProductColors/${id}`;
 
+export const GET_PRODUCT_COLOR = (id: string) => `/products/getProductColorById/${id}`;
+
 export const ADD_PRODUCT_COLOR = (id: string) => `/products/addProductColor/${id}`;
 
 export const getProductColorBody = (colorId: string) => ({
@@ -78,7 +87,7 @@ export const ADD_DIMENSION = (id: string) => `/products/addProductDimension/${id
 
 export const UPDATE_DIMENSION = (id: string) => `/products/updateProductDimension/${id}`;
 
-export const getDimensionBody = (length: number, width: number, height: number, weight: number) => ({
+export const getDimensionBody = (length: string, width: string, height: string, weight: string) => ({
     productLength: length,
     productWidth: width,
     productHeight: height,
@@ -157,6 +166,31 @@ export const getImportDetailsBody = (importId: string, productId: string, suppli
     productColorId: productColorId,
     productQuantity: productQuantity
 });
+
+// Order
+export const GET_ALL_ORDERS = "/orders/getAllOrders";
+
+export const GET_ORDER = (id: string) => `/orders/getOrderById/${id}`;
+
+export const GET_ORDER_ITEMS_FOR_ORDERS = (id: string) => `/orders/getOrderItemsForOrder/${id}`
+
+export const UPDATE_ORDER_STATUS = (id: string) => `/orders/updateOrderStatus/${id}`;
+
+export const COMPLETE_ORDER = (id: string) => `/orders/completeOrder/${id}`;
+
+export const getUpdateOrderStatusBody = (staffId: string, orderStatus: string, cancelReason: string) => ({
+    staffId: staffId,
+    orderStatus: orderStatus,
+    cancelReason: cancelReason
+});
+
+export const getCompleteOrderBody = (orderCompleteDay: Date) => ({
+    orderCompleteDay: orderCompleteDay
+});
+
+// Payment
+
+export const GET_PAYMENT = (id: string) => `/payments/getPaymentById/${id}`;
 
 // Attachment
 export const PREVIEW_ATTACHMENT = (id: string) => `/attachments/previewAttachment/${id}`;

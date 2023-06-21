@@ -14,14 +14,14 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
     const [currentProduct, setCurrentProduct] = useState<Product>({
 		productName: "",
 		productDescription: "",
-		productPrice: 0,
+		productPrice: "0",
 		productCategoryId: "",
 		productSubcategoryId: "",
 		productSupplierId: "",
-		productLength: 0,
-		productWidth: 0,
-		productHeight: 0,
-		productWeight: 0 });
+		productLength: "0",
+		productWidth: "0",
+		productHeight: "0",
+		productWeight: "0" });
     const [currentCategory, setCurrentCategory] = useState<any>(null);
     const [currentSubcategory, setCurrentSubcategory] = useState<any>(null);
     const [currentSupplier, setCurrentSupplier] = useState<any>(null);
@@ -172,14 +172,14 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
             setCurrentProduct({
                 productName: "",
                 productDescription: "",
-                productPrice: 0,
+                productPrice: "0",
                 productCategoryId: "",
                 productSubcategoryId: "",
                 productSupplierId: "",
-                productLength: 0,
-                productWidth: 0,
-                productHeight: 0,
-                productWeight: 0 });
+                productLength: "0",
+                productWidth: "0",
+                productHeight: "0",
+                productWeight: "0" });
             setCurrentCategory(null);
             setCurrentSubcategory(null);
             setCurrentSupplier(null);
@@ -284,7 +284,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                                 <Typography sx={{
                                         fontSize: "1.1rem",
                                         color: "black",
-                                        whiteSpace: "nowrap"
+                                        overflowWrap: "break-word"
                                     }}>
                                         {currentProduct?.productDescription || "Không có mô tả"}
                                 </Typography>
@@ -374,7 +374,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                                         color: "black",
                                         whiteSpace: "nowrap"
                                     }}>
-                                        {currentProduct?.productPrice.toLocaleString("vi-VN", {style : "currency", currency : "VND"})}
+                                        {parseInt(currentProduct?.productPrice).toLocaleString("vi-VN", {style : "currency", currency : "VND"})}
                                 </Typography>
                             </Box>
                         </Box>
