@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system"
-import BgImage from "@/assets/404_not_found_bg.jpg"
+import BgImage from "../../../public/404_not_found_bg.jpg"
 
 const NotFound = () => {
     return(

@@ -83,7 +83,7 @@ const Login = () => {
                 <div className="relative overflow-hidden md:flex hidden w-1/2 bg-gradient-to-tr from-primary-0 to-light-0 i justify-around items-center">
                     {/* Logo */}
                     <div className="flex flex-row items-center">
-                        <img src="src/assets/nguyenshome_logo_white.png" alt="logo" className="h-25 w-20"/>
+                        <img src="public/nguyenshome_logo_white.png" alt="logo" className="h-25 w-20"/>
 
                         <div className="mt-6 ml-2">
                             <div className="text-white text-3xl whitespace-nowrap">NGUYEN'S HOME</div>
