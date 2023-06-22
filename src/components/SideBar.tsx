@@ -136,7 +136,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         )
                     }
                     <Box display="flex" flexDirection="row" width="100%" height="15%" sx={{ minWidth: "max-content", paddingRight: ".9rem", marginBottom: "0rem" }}>
-                        <img src="public/nguyenshome_logo.png" alt="logo" className="h-20 w-15"/>
+                        <img src="/nguyenshome_logo.png" alt="logo" className="h-20 w-15"/>
                         <Box width="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                             <Box width="100%" textAlign="center" sx={{ color: "#A67F78", fontSize: "1.2rem", lineHeight: "2rem", fontWeight: 500, whiteSpace: "nowrap"}}>
                                 NGUYEN'S HOME
