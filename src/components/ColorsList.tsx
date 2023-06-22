@@ -15,7 +15,6 @@ const ColorsList = ({ productId, done, colorsList, setColorsList, imagesList, fi
     const dispatch = useDispatch();
     const [allColors, setAllColors] = useState<any[]>([]);
     const [doneTemp, setDoneTemp] = useState(false);
-    const [imageURLsList, setImageURLsList] = useState<any[]>([]);
     const [URLsList, setURLsList] = useState<any[]>([{ imagesURLs: [] }]);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const all_Colors = useSelector((state: RootState) => state.color.allColors);
@@ -35,7 +34,6 @@ const ColorsList = ({ productId, done, colorsList, setColorsList, imagesList, fi
 
     const getAllImageURLs = async () => {
         try {
-            setImageURLsList([]);
             setURLsList([]);
             setFilesList([]);
             
@@ -58,11 +56,6 @@ const ColorsList = ({ productId, done, colorsList, setColorsList, imagesList, fi
                 
                     imgURLsList.push(imageURLObj);
                 }
-              
-                setImageURLsList(prevImageURLsList => [
-                    ...prevImageURLsList,
-                    { key: indexProdColor, imagesURLs: imgURLsList }
-                ]);
               
                 setURLsList(prevURLsList => [
                     ...prevURLsList,

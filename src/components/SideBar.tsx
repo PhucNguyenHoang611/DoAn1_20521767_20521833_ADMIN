@@ -14,8 +14,7 @@ import {
     UserGroupIcon,
     UserCircleIcon,
     ShoppingCartIcon,
-    ReceiptPercentIcon, 
-    EllipsisHorizontalCircleIcon } from '@heroicons/react/24/outline'
+    ReceiptPercentIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux'
 
 interface SideBarProps {
