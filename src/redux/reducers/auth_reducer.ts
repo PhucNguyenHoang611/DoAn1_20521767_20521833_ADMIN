@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 // State
@@ -16,24 +17,30 @@ export interface User {
 }
 interface IAuthState {
     currentUser: User;
+    allStaffs: any;
 }
-const initialState = { currentUser: {
-    token: "",
-    id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    gender: "",
-    privilege: -1,
-    startWork: new Date(),
-    status: -2,
-    expiredDate: new Date()
-} } as IAuthState;
+const initialState = { 
+    currentUser: {
+        token: "",
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        gender: "",
+        privilege: -1,
+        startWork: new Date(),
+        status: -2,
+        expiredDate: new Date()
+    },
+    allStaffs: null
+} as IAuthState;
 
 // Actions
 export const login = createAction<User>("LOGIN");
 export const logout = createAction("LOGOUT");
+
+export const getAllStaffs = createAction<any>("GET_ALL_STAFFS");
 
 // Reducer
 const authReducer = createReducer(initialState, (builder) => {
@@ -54,7 +61,10 @@ const authReducer = createReducer(initialState, (builder) => {
             status: -2,
             expiredDate: new Date()
         };
-     });
+    })
+    .addCase(getAllStaffs, (state, action) => {
+       state.allStaffs = action.payload;
+    });
 });
 
 export default authReducer;
