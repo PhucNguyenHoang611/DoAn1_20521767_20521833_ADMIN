@@ -17,6 +17,7 @@ import Product from '@/pages/Product/product'
 import NotFound from '@/pages/NotFound/notfound'
 import Import from '@/pages/Import/import'
 import Order from '@/pages/Order/order'
+import Staff from '@/pages/Staff/staff'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const App = () => {
                                 <Route path="product" element={<Product />} />
                                 <Route path="import" element={<Import />} />
                                 <Route path="order" element={<Order />} />
+                                <Route path="staff" element={<Staff />} />
                             </>
                         )}
                     </Route>

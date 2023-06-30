@@ -16,12 +16,46 @@ export const getLoginBody = (email: string, password: string) => ({
 });
 
 // Staff
+export const GET_ALL_STAFFS = "/staffs/getAllStaffs";
+
 export const GET_STAFF = (id: string) => `/staffs/getStaffById/${id}`;
+
+export const CREATE_STAFF = "/staffs/registerStaff";
+
+export const UPDATE_STAFF = (id: string) => `/staffs/updateStaff/${id}`;
+
+export const CHANGE_STAFF_STATUS = (id: string) => `/staffs/activeOrInactiveStaff/${id}`;
+
+export const CHANGE_STAFF_PASSWORD = (id: string) => `/staffs/changeStaffPassword/${id}`;
 
 export const getStaffId = (id: string) => ({
     params: {
         staffId: id
     }
+});
+
+export const getStaffBodyForCreate = (staffPassword: string, staffFirstName: string, staffLastName: string, staffEmail: string, staffPhone: string, staffGender: string, privilege: number) => ({
+    staffPassword: staffPassword,
+    staffFirstName: staffFirstName,
+    staffLastName: staffLastName,
+    staffEmail: staffEmail,
+    staffPhone: staffPhone,
+    staffGender: staffGender,
+    privilege: privilege
+});
+
+export const getStaffBodyForUpdate = (staffFirstName: string, staffLastName: string, staffEmail: string, staffPhone: string, staffGender: string, privilege: number) => ({
+    staffFirstName: staffFirstName,
+    staffLastName: staffLastName,
+    staffEmail: staffEmail,
+    staffPhone: staffPhone,
+    staffGender: staffGender,
+    privilege: privilege
+});
+
+export const getStaffPasswordBody = (staffOldPassword: string, staffNewPassword: string) => ({
+    staffOldPassword: staffOldPassword,
+    staffNewPassword: staffNewPassword
 });
 
 // Customer

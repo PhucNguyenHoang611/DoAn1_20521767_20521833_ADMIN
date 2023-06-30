@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import {  Menu, MenuItem, Box, AppBar, Toolbar, Button, IconButton, Tooltip, Avatar, Typography, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
-import { ArrowRightOnRectangleIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/outline'
+import { ArrowRightOnRectangleIcon, Bars3BottomLeftIcon, LockClosedIcon } from '@heroicons/react/24/outline'
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 
 import { User, logout } from '@/redux/reducers/auth_reducer'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ChangeStaffPasswordModal from './modals/staff/ChangeStaffPasswordModal';
 
 interface HeaderProps {
     currentUser: User;
@@ -18,6 +19,7 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const isOpenMenu = Boolean(anchorEl);
 
@@ -144,12 +146,17 @@ const Header = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: H
                         </Typography>
                     )}
                     <Divider sx={{ mx: 1, my: 1 }} />
+                    <MenuItem onClick={() => setOpenChangePasswordModal(true)}>
+                        <LockClosedIcon  className="h-7 w-7 mr-2 text-secondary-0" />
+                        Đổi mật khẩu
+                    </MenuItem>
                     <MenuItem onClick={() => setOpenDialog(true)}>
                         <ArrowRightOnRectangleIcon  className="h-7 w-7 mr-2 text-secondary-0" />
                         Đăng xuất
                     </MenuItem>
                 </Menu>
             </Toolbar>
+            <ChangeStaffPasswordModal currentUser={currentUser} isModalOpen={openChangePasswordModal} setIsModalOpen={setOpenChangePasswordModal} />
             <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
