@@ -79,7 +79,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         },
                         {
                             key: "3",
-                            title: "Mã giảm giá",
+                            title: "Giảm giá",
                             to: "/discount",
                             icon: <ReceiptPercentIcon className="h-7 w-7 text-secondary-0" />
                         }
@@ -149,18 +149,20 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         </Box>
                     </Box>
                     <Menu style={{ height: "auto"}}>
-                        <MenuItem
-                            active={location.pathname === "/"}
-                            component={<Link to="/" />}
-                            icon={<HomeIcon className="h-7 w-7 text-secondary-0" />}
-                            style={{ textAlign: "center" }}>
-                            <Typography variant="h6" sx={{
-                                color: "#716864",
-                                fontWeight: "normal"
-                            }}>
-                                Bảng điều khiển
-                            </Typography>
-                        </MenuItem>
+                        {(currentUser.privilege === 0) && (
+                            <MenuItem
+                                active={location.pathname === "/"}
+                                component={<Link to="/" />}
+                                icon={<HomeIcon className="h-7 w-7 text-secondary-0" />}
+                                style={{ textAlign: "center" }}>
+                                <Typography variant="h6" sx={{
+                                    color: "#716864",
+                                    fontWeight: "normal"
+                                }}>
+                                    Bảng điều khiển
+                                </Typography>
+                            </MenuItem>
+                        )}
                         <SubMenu label={
                                 <Typography variant="h6" sx={{
                                     textAlign: "center",
@@ -182,18 +184,20 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                     Sản phẩm
                                 </Typography>
                             </MenuItem>
-                            <MenuItem
-                                active={location.pathname === "/import"}
-                                component={<Link to="/import" />}
-                                icon={<InboxArrowDownIcon  className="h-7 w-7 text-secondary-0" />}
-                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
-                                <Typography variant="h6" sx={{
-                                    color: "#716864",
-                                    fontWeight: "normal"
-                                }}>
-                                    Nhập kho
-                                </Typography>
-                            </MenuItem>
+                            {(currentUser.privilege !== 1) && (
+                                <MenuItem
+                                    active={location.pathname === "/import"}
+                                    component={<Link to="/import" />}
+                                    icon={<InboxArrowDownIcon  className="h-7 w-7 text-secondary-0" />}
+                                    style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
+                                    <Typography variant="h6" sx={{
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Nhập kho
+                                    </Typography>
+                                </MenuItem>
+                            )}
                             {/* <MenuItem
                                 active={location.pathname === "/other"}
                                 component={<Link to="/other" />}
@@ -207,18 +211,20 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 </Typography>
                             </MenuItem> */}
                         </SubMenu>
-                        <MenuItem
-                            active={location.pathname === "/order"}
-                            component={<Link to="/order" />}
-                            icon={<ShoppingCartIcon className="h-7 w-7 text-secondary-0" />}
-                            style={{ textAlign: "center" }}>
-                            <Typography variant="h6" sx={{
-                                color: "#716864",
-                                fontWeight: "normal"
-                            }}>
-                                Đơn hàng
-                            </Typography>
-                        </MenuItem>
+                        {(currentUser.privilege !== 2) && (
+                            <MenuItem
+                                active={location.pathname === "/order"}
+                                component={<Link to="/order" />}
+                                icon={<ShoppingCartIcon className="h-7 w-7 text-secondary-0" />}
+                                style={{ textAlign: "center" }}>
+                                <Typography variant="h6" sx={{
+                                    color: "#716864",
+                                    fontWeight: "normal"
+                                }}>
+                                    Đơn hàng
+                                </Typography>
+                            </MenuItem>
+                        )}
                         {menuList.map((data) => (
                             <Item
                                 key={data.key}
