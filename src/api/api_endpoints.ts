@@ -59,10 +59,15 @@ export const getStaffPasswordBody = (staffOldPassword: string, staffNewPassword:
 });
 
 // Customer
+export const GET_ALL_CUSTOMERS = "/customers/getAllCustomers";
+
 export const GET_CUSTOMER = (id: string) => `/customers/getCustomerById/${id}`;
 
 // Customer Address
 export const GET_CUSTOMER_ADDRESS = (id: string) => `/addresses/getAddressById/${id}`;
+
+export const GET_CUSTOMER_DEFAULT_ADDRESS = (id: string) => `/addresses/getCustomerDefaultAddress/${id}`;
+
 
 
 // Product
