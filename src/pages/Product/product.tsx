@@ -70,6 +70,7 @@ const RenderCell = ({ productId }: RenderCellProps) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const currentToken = useSelector((state: RootState) => state.auth.currentUser.token);
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
 
     const handleGetProductDetails = () => {
         setOpenProductDetailsModal(true);
@@ -128,16 +129,20 @@ const RenderCell = ({ productId }: RenderCellProps) => {
                     <EyeIcon className="w-5 h-5 text-white" />
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Chỉnh sửa">
-                <IconButton size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }} onClick={handleEditProduct}>
-                    <PencilSquareIcon className="w-5 h-5 text-white" />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Xóa">
-                <IconButton size="small" sx={{ backgroundColor: "#DE5656" }} onClick={() => setOpenDialog(true)}>
-                    <TrashIcon className="w-5 h-5 text-white" />
-                </IconButton>
-            </Tooltip>
+            {(currentUser.privilege === 0) && (
+                <>
+                    <Tooltip title="Chỉnh sửa">
+                        <IconButton size="small" sx={{ backgroundColor: "#A67F78", mx: 3 }} onClick={handleEditProduct}>
+                            <PencilSquareIcon className="w-5 h-5 text-white" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Xóa">
+                        <IconButton size="small" sx={{ backgroundColor: "#DE5656" }} onClick={() => setOpenDialog(true)}>
+                            <TrashIcon className="w-5 h-5 text-white" />
+                        </IconButton>
+                    </Tooltip>
+                </>
+            )}
             <ProductDetailsModal productId={productId} isModalOpen={openProductDetailsModal} setIsModalOpen={setOpenProductDetailsModal} />
             <AddOrEditProductModal token={currentToken} productId={productId} isModalOpen={openEditProductModal} setIsModalOpen={setOpenEditProductModal} setOpenSnackbar={setOpenEditSnackbar} />
             <Dialog
@@ -284,12 +289,14 @@ const Product = () => {
                 <Typography className="text-primary-0" sx={{ fontSize: "2rem", fontWeight: "bold" }}>
                     Sản phẩm
                 </Typography>
-                <Button sx={{ backgroundColor: "#716864" }} onClick={handleCreateProduct}>
-                    <PlusCircleIcon className="w-6 h-6 text-white" />
-                    <Typography className="text-white hidden md:block pl-2" sx={{ fontSize: "0.9rem", fontWeight: "medium" }}>
-                        THÊM SẢN PHẨM
-                    </Typography>
-                </Button>
+                {(currentUser.privilege === 0) && (
+                    <Button sx={{ backgroundColor: "#716864" }} onClick={handleCreateProduct}>
+                        <PlusCircleIcon className="w-6 h-6 text-white" />
+                        <Typography className="text-white hidden md:block pl-2" sx={{ fontSize: "0.9rem", fontWeight: "medium" }}>
+                            THÊM SẢN PHẨM
+                        </Typography>
+                    </Button>
+                )}
             </Box>
             <Box width="100%" height="80%" className="px-7 md:px-10">
                 <DataGrid

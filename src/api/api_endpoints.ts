@@ -68,8 +68,6 @@ export const GET_CUSTOMER_ADDRESS = (id: string) => `/addresses/getAddressById/$
 
 export const GET_CUSTOMER_DEFAULT_ADDRESS = (id: string) => `/addresses/getCustomerDefaultAddress/${id}`;
 
-
-
 // Product
 export const GET_ALL_PRODUCTS = "/products/getAllProducts";
 
@@ -175,6 +173,31 @@ export const getColorId = (id: string) => ({
     params: {
         colorId: id
     }
+});
+
+// Discount
+export const GET_ALL_DISCOUNTS = "/discounts/getAllDiscounts";
+
+export const GET_DISCOUNT = (id: string) => `/discounts/getDiscountById/${id}`;
+
+export const CREATE_DISCOUNT = "/discounts/createDiscount";
+
+export const UPDATE_DISCOUNT = (id: string) => `/discounts/updateDiscount/${id}`;
+
+export const DELETE_DISCOUNT = (id: string) => `/discounts/deleteDiscount/${id}`;
+
+export const RESET_DISCOUNT = (id: string) => `/discounts/resetDiscount/${id}`;
+
+export const GET_ALL_PRODUCTS_FOR_DISCOUNT = (id: string) => `/discounts/getAllProductsForDiscount/${id}`;
+
+export const APPLY_DISCOUNT_FOR_PRODUCT = (productId: string, discountId: string) => `/discounts/applyDiscountForProduct/${productId}/${discountId}`;
+
+export const getDiscountBody = (discountName: string, discountDescription: string, discountPercent: number, discountStartDate: Date, discountEndDate: Date) => ({
+    discountName: discountName,
+    discountDescription: discountDescription,
+    discountPercent: discountPercent,
+    discountStartDate: discountStartDate,
+    discountEndDate: discountEndDate
 });
 
 // Import

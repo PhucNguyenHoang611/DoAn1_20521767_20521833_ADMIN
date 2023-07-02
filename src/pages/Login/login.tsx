@@ -68,7 +68,11 @@ const Login = () => {
 
             dispatch(login(currentUser));
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
-            navigate("/");
+            if (user.data.data.privilege === 0) {
+                navigate("/");
+            } else {
+                navigate("/product");
+            }
         } catch (error) {
             console.log(error);
         }

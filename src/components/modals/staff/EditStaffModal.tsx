@@ -108,7 +108,7 @@ const EditStaffModal = ({ token, staffId, isModalOpen, setIsModalOpen, setOpenSn
 					backgroundColor: "white",
 					padding: "1.5rem",
 					width: "60%",
-					height: "90%",
+					height: "max-content",
 					overflowY: "auto" }}>
 					<Box width="100%" height="10%" display="flex" alignItems="center" justifyContent="space-between">
                         <Typography sx={{

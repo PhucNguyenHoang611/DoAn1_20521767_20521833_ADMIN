@@ -9,6 +9,7 @@ import * as apiEndpoints from '@/api/api_endpoints'
 const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) => {
     const [currentCustomer, setCurrentCustomer] = useState<any>(null);
     const [currentCustomerCity, setCurrentCustomerCity] = useState<any>(null);
+    const [currentCustomerAvatar, setCurrentCustomerAvatar] = useState<string>("https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg");
     
     const getCustomer = async () => {
         try {
@@ -21,6 +22,15 @@ const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) 
             );
 
             setCurrentCustomer(customer.data.data);
+
+            if (customer.data.data.customerAvatar) {
+                const avatar = await mainApi.get(
+                    apiEndpoints.PREVIEW_ATTACHMENT(customer.data.data.customerAvatar)
+                );
+                
+                setCurrentCustomerAvatar(avatar.data.attachmentURL);
+            }
+
             if (city.data.data) {
                 setCurrentCustomerCity(city.data.data.receiverCity);
             }
@@ -39,6 +49,7 @@ const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) 
         } else {
             setCurrentCustomer(null);
             setCurrentCustomerCity(null);
+            setCurrentCustomerAvatar("https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg");
         }
     }, [isModalOpen]);
     
@@ -54,7 +65,7 @@ const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) 
                     transform: "translate(-50%, -50%)",
                     backgroundColor: "white",
                     padding: "2rem",
-                    width: "50%",
+                    width: "70%",
                     height: "max-content",
                     overflowY: "auto" }}>
                     <Box width="100%" height="10%" display="flex" alignItems="center" justifyContent="space-between">
@@ -69,145 +80,151 @@ const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) 
                             <XMarkIcon className="w-5 h-5 text-black" />
                         </IconButton>
                     </Box>
-
-                    <Box width="100%" height="90%" display="flex" flexDirection="column" sx={{ mt: 4 }}>
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
-                            <Box width="20%" sx={{ mr: 4 }}>
-                                <Typography sx={{
-                                        fontWeight: "medium",
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap",
-                                        textAlign: "right"
-                                    }}>
-                                        Mã khách hàng:
-                                </Typography>
+                    
+                    <Box width="100%" height="90%" display="flex">
+                        <Box width="60%" height="100%" display="flex" flexDirection="column" sx={{ mt: 4 }}>
+                            <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                <Box width="20%" sx={{ mr: 4 }}>
+                                    <Typography sx={{
+                                            fontWeight: "medium",
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap",
+                                            textAlign: "right"
+                                        }}>
+                                            Mã khách hàng:
+                                    </Typography>
+                                </Box>
+                                <Box width="80%">
+                                    <Typography sx={{
+                                            fontSize: "1.1rem",
+                                            fontStyle: "italic",
+                                            color: "black",
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            {customerId}
+                                    </Typography>
+                                </Box>
                             </Box>
-                            <Box width="80%">
-                                <Typography sx={{
-                                        fontSize: "1.1rem",
-                                        fontStyle: "italic",
-                                        color: "black",
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        {customerId}
-                                </Typography>
+
+                            <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                <Box width="20%" sx={{ mr: 4 }}>
+                                    <Typography sx={{
+                                            fontWeight: "medium",
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap",
+                                            textAlign: "right"
+                                        }}>
+                                            Tên khách hàng:
+                                    </Typography>
+                                </Box>
+                                <Box width="80%">
+                                    <Typography sx={{
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            {currentCustomer?.customerLastName + " " + currentCustomer?.customerFirstName}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                <Box width="20%" sx={{ mr: 4 }}>
+                                    <Typography sx={{
+                                            fontWeight: "medium",
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap",
+                                            textAlign: "right"
+                                        }}>
+                                            Email:
+                                    </Typography>
+                                </Box>
+                                <Box width="80%">
+                                    <Typography sx={{
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            {currentCustomer?.customerEmail}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                <Box width="20%" sx={{ mr: 4 }}>
+                                    <Typography sx={{
+                                            fontWeight: "medium",
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap",
+                                            textAlign: "right"
+                                        }}>
+                                            Giới tính:
+                                    </Typography>
+                                </Box>
+                                <Box width="80%">
+                                    <Typography sx={{
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            {currentCustomer?.customerGender}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                <Box width="20%" sx={{ mr: 4 }}>
+                                    <Typography sx={{
+                                            fontWeight: "medium",
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap",
+                                            textAlign: "right"
+                                        }}>
+                                            Sinh nhật:
+                                    </Typography>
+                                </Box>
+                                <Box width="80%">
+                                    <Typography sx={{
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            {currentCustomer ? new Date(currentCustomer.customerBirthday).toLocaleDateString() : ""}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                <Box width="20%" sx={{ mr: 4 }}>
+                                    <Typography sx={{
+                                            fontWeight: "medium",
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap",
+                                            textAlign: "right"
+                                        }}>
+                                            Tỉnh / Thành phố:
+                                    </Typography>
+                                </Box>
+                                <Box width="80%">
+                                    <Typography sx={{
+                                            fontSize: "1.1rem",
+                                            color: "black",
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            {currentCustomerCity ? currentCustomerCity : ""}
+                                    </Typography>
+                                </Box>
                             </Box>
                         </Box>
 
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
-                            <Box width="20%" sx={{ mr: 4 }}>
-                                <Typography sx={{
-                                        fontWeight: "medium",
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap",
-                                        textAlign: "right"
-                                    }}>
-                                        Tên khách hàng:
-                                </Typography>
-                            </Box>
-                            <Box width="80%">
-                                <Typography sx={{
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        {currentCustomer?.customerLastName + " " + currentCustomer?.customerFirstName}
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
-                            <Box width="20%" sx={{ mr: 4 }}>
-                                <Typography sx={{
-                                        fontWeight: "medium",
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap",
-                                        textAlign: "right"
-                                    }}>
-                                        Email:
-                                </Typography>
-                            </Box>
-                            <Box width="80%">
-                                <Typography sx={{
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        {currentCustomer?.customerEmail}
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
-                            <Box width="20%" sx={{ mr: 4 }}>
-                                <Typography sx={{
-                                        fontWeight: "medium",
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap",
-                                        textAlign: "right"
-                                    }}>
-                                        Giới tính:
-                                </Typography>
-                            </Box>
-                            <Box width="80%">
-                                <Typography sx={{
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        {currentCustomer?.customerGender}
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
-                            <Box width="20%" sx={{ mr: 4 }}>
-                                <Typography sx={{
-                                        fontWeight: "medium",
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap",
-                                        textAlign: "right"
-                                    }}>
-                                        Sinh nhật:
-                                </Typography>
-                            </Box>
-                            <Box width="80%">
-                                <Typography sx={{
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        {currentCustomer ? new Date(currentCustomer.customerBirthday).toLocaleDateString() : ""}
-                                </Typography>
-                            </Box>
-                        </Box>
-
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
-                            <Box width="20%" sx={{ mr: 4 }}>
-                                <Typography sx={{
-                                        fontWeight: "medium",
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap",
-                                        textAlign: "right"
-                                    }}>
-                                        Tỉnh / Thành phố:
-                                </Typography>
-                            </Box>
-                            <Box width="80%">
-                                <Typography sx={{
-                                        fontSize: "1.1rem",
-                                        color: "black",
-                                        whiteSpace: "nowrap"
-                                    }}>
-                                        {currentCustomerCity ? currentCustomerCity : ""}
-                                </Typography>
-                            </Box>
+                        <Box width="30%" height="100%" display="flex" flexDirection="column" sx={{ mt: 4 }}>
+                            <img alt="customer-avatar" className="w-full h-full object-cover" src={currentCustomerAvatar} />
                         </Box>
                     </Box>
                 </Box>
