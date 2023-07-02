@@ -159,7 +159,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                     color: "#716864",
                                     fontWeight: "normal"
                                 }}>
-                                    Bảng điều khiển
+                                    Trang chủ
                                 </Typography>
                             </MenuItem>
                         )}
