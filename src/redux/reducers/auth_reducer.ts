@@ -19,6 +19,7 @@ interface IAuthState {
     currentUser: User;
     allStaffs: any;
     allCustomers: any;
+    allDiscounts: any;
 }
 const initialState = { 
     currentUser: {
@@ -35,7 +36,8 @@ const initialState = {
         expiredDate: new Date()
     },
     allStaffs: null,
-    allCustomers: null
+    allCustomers: null,
+    allDiscounts: null
 } as IAuthState;
 
 // Actions
@@ -44,6 +46,7 @@ export const logout = createAction("LOGOUT");
 
 export const getAllStaffs = createAction<any>("GET_ALL_STAFFS");
 export const getAllCustomers = createAction<any>("GET_ALL_CUSTOMERS");
+export const getAllDiscounts = createAction<any>("GET_ALL_DISCOUNTS");
 
 // Reducer
 const authReducer = createReducer(initialState, (builder) => {
@@ -70,6 +73,9 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAllCustomers, (state, action) => {
         state.allCustomers = action.payload;
+    })
+    .addCase(getAllDiscounts, (state, action) => {
+        state.allDiscounts = action.payload;
     });
 });
 

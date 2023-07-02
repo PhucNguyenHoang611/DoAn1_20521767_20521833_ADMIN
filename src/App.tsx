@@ -19,6 +19,7 @@ import Import from '@/pages/Import/import'
 import Order from '@/pages/Order/order'
 import Staff from '@/pages/Staff/staff'
 import Customer from '@/pages/Customer/customer'
+import Discount from '@/pages/Discount/discount'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -85,14 +86,15 @@ const App = () => {
                                         <Route index element={<Dashboard />} /> 
                                         <Route path="customer" element={<Customer />} />
                                         <Route path="staff" element={<Staff />} />
+                                        <Route path="discount" element={<Discount />} />
                                     </>
                                 )}
                                 <Route path="product" element={<Product />} />
-                                {(currentUser.privilege !== 2) && (
-                                    <Route path="order" element={<Order />} />
-                                )}
                                 {(currentUser.privilege !== 1) && (
                                     <Route path="import" element={<Import />} />
+                                )}
+                                {(currentUser.privilege !== 2) && (
+                                    <Route path="order" element={<Order />} />
                                 )}
                             </>
                         )}
