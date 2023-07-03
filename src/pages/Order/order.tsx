@@ -291,8 +291,9 @@ const Order = () => {
                 const ordItems = await getOrderItems(ord._id);
                 let sum = 0;
                 await Promise.all(ordItems.map((item: any) => {
-                    sum += item.productPrice
+                    sum += item.productSalePrice
                 }));
+                sum += ord.orderShippingFee;
 
                 return {
                     id: ord._id,

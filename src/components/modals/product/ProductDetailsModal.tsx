@@ -22,6 +22,8 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
 		productWidth: "0",
 		productHeight: "0",
 		productWeight: "0" });
+    const [currentQuantity, setCurrentQuantity] = useState(0);
+    const [currentSold, setCurrentSold] = useState(0);
     const [currentCategory, setCurrentCategory] = useState<any>(null);
     const [currentSubcategory, setCurrentSubcategory] = useState<any>(null);
     const [currentSupplier, setCurrentSupplier] = useState<any>(null);
@@ -38,6 +40,9 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                 apiEndpoints.GET_PRODUCT(id),
                 apiEndpoints.getProductId(id)
             );
+
+            setCurrentQuantity(product.data.data.productQuantity);
+            setCurrentSold(product.data.data.productSold);
 
             const dimension = await mainApi.get(
 				apiEndpoints.GET_DIMENSION(id)
@@ -422,6 +427,50 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                                 </Typography>
                             </Box>
                         </Box>
+                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                            <Box width="20%" sx={{ mr: 4 }}>
+                                <Typography sx={{
+                                        fontWeight: "medium",
+                                        fontSize: "1.1rem",
+                                        color: "black",
+                                        whiteSpace: "nowrap",
+                                        textAlign: "right"
+                                    }}>
+                                        Số lượng:
+                                </Typography>
+                            </Box>
+                            <Box width="80%">
+                                <Typography sx={{
+                                        fontSize: "1.1rem",
+                                        color: "black",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        {currentQuantity}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                            <Box width="20%" sx={{ mr: 4 }}>
+                                <Typography sx={{
+                                        fontWeight: "medium",
+                                        fontSize: "1.1rem",
+                                        color: "black",
+                                        whiteSpace: "nowrap",
+                                        textAlign: "right"
+                                    }}>
+                                        Đã bán:
+                                </Typography>
+                            </Box>
+                            <Box width="80%">
+                                <Typography sx={{
+                                        fontSize: "1.1rem",
+                                        color: "black",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        {currentSold}
+                                </Typography>
+                            </Box>
+                        </Box>
                         <Box width="100%" sx={{ borderBottom: "1px solid gray", mb: 2 }}></Box>
                         <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 3 }}>
                             <Box width="10%" sx={{ mr: 7 }}>
@@ -442,7 +491,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                                 ))}
                             </Box>
                         </Box>
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 4 }}>
                             <Box width="10%" sx={{ mr: 6 }}>
                                 <Typography sx={{
                                         fontWeight: "medium",
