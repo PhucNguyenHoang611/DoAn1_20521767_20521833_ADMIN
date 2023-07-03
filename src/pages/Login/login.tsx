@@ -106,15 +106,15 @@ const Login = () => {
                 <div className="flex md:w-1/2 justify-center items-center py-10 bg-white">
                     {/* Login Form */}
                     <form onSubmit={handleSubmit(onSubmit)} className="bg-white">
-                        <h1 className="text-dark-0 font-bold text-3xl mb-2">Hello Again!</h1>
-                        <p className="text-primary-0 font-medium text-lg mb-7">WELCOME BACK</p>
+                        <h1 className="text-dark-0 font-bold text-3xl mb-2">Xin chào!</h1>
+                        <p className="text-primary-0 font-medium text-lg mb-7">MỪNG BẠN TRỞ LẠI</p>
                         
                         <div className="flex items-center border-2 border-secondary-1 py-2 px-3 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.3} stroke="#8F8681" className="w-5 h-5">
                                 <path strokeLinecap="round" d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25" />
                             </svg>
 
-                            <input {...register("email", { required: "Email không được để trống" })} className="pl-2 outline-none border-none text-lg" type="email" placeholder="Your email" />
+                            <input {...register("email", { required: "Email không được để trống" })} className="pl-2 outline-none border-none text-lg" type="email" placeholder="Nhập email của bạn" />
                         </div>
                         <p className="text-red-700 text-base mb-4">{errors.email?.message}</p>
 
@@ -123,7 +123,7 @@ const Login = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                             </svg>
 
-                            <input {...register("password", { required: "Password không được để trống", minLength: { value: 8, message: "Password phải có ít nhất 8 ký tự" } })} className="pl-2 outline-none border-none text-lg" type={showPassword ? "text" : "password"} placeholder="Password" />
+                            <input {...register("password", { required: "Password không được để trống", minLength: { value: 8, message: "Password phải có ít nhất 8 ký tự" } })} className="pl-2 outline-none border-none text-lg" type={showPassword ? "text" : "password"} placeholder="Mật khẩu" />
 
                             {/* Show Password */}
                             {showPassword ? 
@@ -139,7 +139,7 @@ const Login = () => {
                         </div>
                         <p className="text-red-700 text-base">{errors.password?.message}</p>
 
-                        <button type="submit" className="block w-full bg-dark-1 mt-4 py-2 rounded-md text-white font-semibold mb-4">LOGIN</button>
+                        <button type="submit" className="block w-full bg-dark-1 mt-4 py-2 rounded-md text-white font-semibold mb-4">ĐĂNG NHẬP</button>
                     </form>
                 </div>
             </div>

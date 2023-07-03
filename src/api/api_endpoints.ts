@@ -256,3 +256,21 @@ export const GET_PAYMENT = (id: string) => `/payments/getPaymentById/${id}`;
 
 // Attachment
 export const PREVIEW_ATTACHMENT = (id: string) => `/attachments/previewAttachment/${id}`;
+
+// Statistic
+
+export const COUNT_NEW_CUSTOMERS = "/statistics/countNewCustomers";
+
+export const COUNT_NEW_ORDERS_OF_MONTH = "/statistics/countNewOrdersOfMonth";
+
+export const GET_PERCENT_GROWTH = "/statistics/getPercentGrowth";
+
+export const GET_TOTAL_IMPORT_PRICE_OF_MONTH = "/statistics/getImportTotalPriceOfMonth";
+
+export const GET_REVENUE_OF_MONTH = "/statistics/getRevenueOfMonth";
+
+export const GET_REVENUE_OF_LAST_MONTH = "/statistics/getRevenueOfLastMonth";
+
+export const GET_ORDER_PER_MONTH = (year: number) => `/statistics/getOrderPerMonth/${year}`;
+
+export const GET_REVENUE_PER_MONTH = (year: number) => `/statistics/getRevenuePerMonth/${year}`;
