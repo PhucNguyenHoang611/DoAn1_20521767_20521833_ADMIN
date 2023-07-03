@@ -127,7 +127,7 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
                 const product = await getProduct(item.productId);
                 const color = await getColor(item.productColorId);
 
-                sum += item.productPrice;
+                sum += item.productSalePrice;
                 
                 return {
                     key: item._id,
@@ -136,7 +136,7 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
                     color: color.color.colorName,
                     unitPrice: product.productPrice.toLocaleString("vi-VN", {style : "currency", currency : "VND"}),
                     quantity: item.productQuantity,
-                    total: item.productPrice.toLocaleString("vi-VN", {style : "currency", currency : "VND"})
+                    total: item.productSalePrice.toLocaleString("vi-VN", {style : "currency", currency : "VND"})
                 }
             })
         );
