@@ -31,6 +31,10 @@ const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) 
                 setCurrentCustomerAvatar(avatar.data.attachmentURL);
             }
 
+            if (customer.data.data.customerProvider === "Google") {
+                setCurrentCustomerAvatar("https://i.pinimg.com/564x/fb/52/e3/fb52e39c5910bdbcc3b98d58d6ca6944--softball-catcher-avatar.jpg");
+            }
+
             if (city.data.data) {
                 setCurrentCustomerCity(city.data.data.receiverCity);
             }
@@ -224,7 +228,9 @@ const CustomerDetailsModal = ({ customerId, isModalOpen, setIsModalOpen }: any) 
                         </Box>
 
                         <Box width="30%" height="100%" display="flex" flexDirection="column" sx={{ mt: 4 }}>
-                            <img alt="customer-avatar" className="w-full h-full object-cover" src={currentCustomerAvatar} />
+                            <div style={{ width: "250px", height: "250px", position: "relative", overflow: "hidden", borderRadius: "50%" }}>
+                                <img alt="customer-avatar" className="max-w-full h-full object-cover" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} src={currentCustomerAvatar} />
+                            </div>
                         </Box>
                     </Box>
                 </Box>
