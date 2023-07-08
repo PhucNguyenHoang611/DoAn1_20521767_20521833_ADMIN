@@ -14,7 +14,10 @@ import {
     UserGroupIcon,
     UserCircleIcon,
     ShoppingCartIcon,
-    ReceiptPercentIcon } from '@heroicons/react/24/outline'
+    ReceiptPercentIcon, 
+    EllipsisHorizontalCircleIcon,
+    SparklesIcon,
+    TruckIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux'
 
 interface SideBarProps {
@@ -198,18 +201,6 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                     </Typography>
                                 </MenuItem>
                             )}
-                            {/* <MenuItem
-                                active={location.pathname === "/other"}
-                                component={<Link to="/other" />}
-                                icon={<EllipsisHorizontalCircleIcon className="h-7 w-7 text-secondary-0" />}
-                                style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
-                                <Typography variant="h6" sx={{
-                                    color: "#716864",
-                                    fontWeight: "normal"
-                                }}>
-                                    Khác
-                                </Typography>
-                            </MenuItem> */}
                         </SubMenu>
                         {(currentUser.privilege !== 2) && (
                             <MenuItem
@@ -232,7 +223,45 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 to={data.to}
                                 icon={data.icon} />
                         ))}
+
+                        {(currentUser.privilege === 0) && (
+                            <SubMenu label={
+                                    <Typography variant="h6" sx={{
+                                        textAlign: "center",
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Khác
+                                    </Typography>}
+                                icon={<EllipsisHorizontalCircleIcon className="h-7 w-7 text-secondary-0" />}>
+                                <MenuItem
+                                    active={location.pathname === "/color"}
+                                    component={<Link to="/color" />}
+                                    icon={<SparklesIcon className="h-7 w-7 text-secondary-0" />}
+                                    style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
+                                    <Typography variant="h6" sx={{
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Màu
+                                    </Typography>
+                                </MenuItem>
+                                <MenuItem
+                                    active={location.pathname === "/supplier"}
+                                    component={<Link to="/supplier" />}
+                                    icon={<TruckIcon className="h-7 w-7 text-secondary-0" />}
+                                    style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
+                                    <Typography variant="h6" sx={{
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Nhà cung cấp
+                                    </Typography>
+                                </MenuItem>
+                            </SubMenu>
+                        )}
                     </Menu>
+
                     <Menu style={{ position: "absolute", bottom: 0, width: "100%", height: "auto" }}>
                         <MenuItem
                             icon={<ArrowRightOnRectangleIcon  className="h-7 w-7 text-secondary-0" />}
