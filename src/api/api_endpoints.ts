@@ -156,6 +156,12 @@ export const getSubcategoryId = (id: string) => ({
 // Supplier
 export const GET_ALL_SUPPLIERS = "/suppliers/getAllSuppliers";
 
+export const CREATE_SUPPLIER = "/suppliers/createSupplier";
+
+export const UPDATE_SUPPLIER = (id: string) => `/suppliers/updateSupplier/${id}`;
+
+export const DELETE_SUPPLIER = (id: string) => `/suppliers/deleteSupplier/${id}`;
+
 export const GET_SUPPLIER = (id: string) => `/suppliers/getSupplierById/${id}`;
 
 export const getSupplierId = (id: string) => ({
@@ -164,8 +170,20 @@ export const getSupplierId = (id: string) => ({
     }
 });
 
+export const getSupplierBody = (supplierName: string, supplierCountry: string, supplierAddress: string) => ({
+    supplierName: supplierName,
+    supplierCountry: supplierCountry,
+    supplierAddress: supplierAddress
+});
+
 // Color
 export const GET_ALL_COLORS = "/colors/getAllColors";
+
+export const CREATE_COLOR = "/colors/createColor";
+
+export const UPDATE_COLOR = (id: string) => `/colors/updateColor/${id}`;
+
+export const DELETE_COLOR = (id: string) => `/colors/deleteColor/${id}`;
 
 export const GET_COLOR = (id: string) => `/colors/getColorById/${id}`;
 
@@ -173,6 +191,11 @@ export const getColorId = (id: string) => ({
     params: {
         colorId: id
     }
+});
+
+export const getColorBody = (colorName: string, colorHex: string) => ({
+    colorName: colorName,
+    colorHex: colorHex
 });
 
 // Discount

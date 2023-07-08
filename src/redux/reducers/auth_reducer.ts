@@ -20,6 +20,8 @@ interface IAuthState {
     allStaffs: any;
     allCustomers: any;
     allDiscounts: any;
+    allColors: any;
+    allSuppliers: any;
 }
 const initialState = { 
     currentUser: {
@@ -37,7 +39,9 @@ const initialState = {
     },
     allStaffs: null,
     allCustomers: null,
-    allDiscounts: null
+    allDiscounts: null,
+    allColors: null,
+    allSuppliers: null
 } as IAuthState;
 
 // Actions
@@ -47,6 +51,9 @@ export const logout = createAction("LOGOUT");
 export const getAllStaffs = createAction<any>("GET_ALL_STAFFS");
 export const getAllCustomers = createAction<any>("GET_ALL_CUSTOMERS");
 export const getAllDiscounts = createAction<any>("GET_ALL_DISCOUNTS");
+export const getAllColors = createAction<any>("GET_ALL_COLORS");
+export const getAllSuppliers = createAction<any>("GET_ALL_SUPPLIERS");
+
 
 // Reducer
 const authReducer = createReducer(initialState, (builder) => {
@@ -76,6 +83,12 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAllDiscounts, (state, action) => {
         state.allDiscounts = action.payload;
+    })
+    .addCase(getAllColors, (state, action) => {
+        state.allColors = action.payload;
+    })
+    .addCase(getAllSuppliers, (state, action) => {
+        state.allSuppliers = action.payload;
     });
 });
 
