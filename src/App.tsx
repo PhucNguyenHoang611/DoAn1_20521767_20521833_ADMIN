@@ -20,6 +20,8 @@ import Order from '@/pages/Order/order'
 import Staff from '@/pages/Staff/staff'
 import Customer from '@/pages/Customer/customer'
 import Discount from '@/pages/Discount/discount'
+import Color from '@/pages/Color/color'
+import Supplier from '@/pages/Supplier/supplier'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -87,6 +89,8 @@ const App = () => {
                                         <Route path="customer" element={<Customer />} />
                                         <Route path="staff" element={<Staff />} />
                                         <Route path="discount" element={<Discount />} />
+                                        <Route path="color" element={<Color />} />
+                                        <Route path="supplier" element={<Supplier />} />
                                     </>
                                 )}
                                 <Route path="product" element={<Product />} />
