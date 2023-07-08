@@ -134,6 +134,12 @@ export const getDimensionBody = (length: string, width: string, height: string, 
 // Category
 export const GET_ALL_CATEGORIES = "/categories/getAllCategories";
 
+export const CREATE_CATEGORY = "/categories/createCategory";
+
+export const UPDATE_CATEGORY = (id: string) => `/categories/updateCategory/${id}`;
+
+export const DELETE_CATEGORY = (id: string) => `/categories/deleteCategory/${id}`;
+
 export const GET_CATEGORY = (id: string) => `/categories/getCategoryById/${id}`;
 
 export const getCategoryId = (id: string) => ({
@@ -142,8 +148,19 @@ export const getCategoryId = (id: string) => ({
     }
 });
 
+export const getCategoryBody = (categoryName: string, categorySlug: string) => ({
+    categoryName: categoryName,
+    categorySlug: categorySlug
+});
+
 // Subcategory
 export const GET_ALL_SUBCATEGORIES = "/subcategories/getAllSubcategories";
+
+export const CREATE_SUBCATEGORY = "/subcategories/createSubcategory";
+
+export const UPDATE_SUBCATEGORY = (id: string) => `/subcategories/updateSubcategory/${id}`;
+
+export const DELETE_SUBCATEGORY = (id: string) => `/subcategories/deleteSubcategory/${id}`;
 
 export const GET_SUBCATEGORY = (id: string) => `/subcategories/getSubcategoryById/${id}`;
 
@@ -151,6 +168,11 @@ export const getSubcategoryId = (id: string) => ({
     params: {
         subcategoryId: id
     }
+});
+
+export const getSubcategoryBody = (subcategoryName: string, subcategorySlug: string) => ({
+    subcategoryName: subcategoryName,
+    subcategorySlug: subcategorySlug
 });
 
 // Supplier

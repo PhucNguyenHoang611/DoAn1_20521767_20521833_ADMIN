@@ -96,6 +96,7 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
     const [openCancelOrderModal, setOpenCancelOrderModal] = useState(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [openConfirmSnackbar, setOpenConfirmSnackbar] = useState(false);
+    const [openFailedSnackbar, setOpenFailedSnackbar] = useState(false);
     const currentUser = useSelector((state: RootState) => state.auth.currentUser);
     const getOrd = useSelector((state: RootState) => state.import.getOrder);
 
@@ -112,11 +113,6 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
     }
 
     const handleUpdateOrderStatus = async (stt: string) => {
-        if (stt === "Đã xác nhận") {
-            setOpenConfirmSnackbar(true);
-            setOpenConfirmDialog(false);
-        }
-
         let staffID = "";
 
         if (currentOrder.orderStatus === "Đặt hàng")
@@ -136,9 +132,20 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
                 data: data
             });
         } catch (error: any) {
-            console.log(error);
+            const errorMessage = error.response.data.error;
+
+            if (errorMessage === "Can't confirm this order because of product quantity") {
+                setOpenFailedSnackbar(true);
+                setOpenConfirmDialog(false);
+            }
+
+            return;
         }
 
+        if (stt === "Đã xác nhận") {
+            setOpenConfirmSnackbar(true);
+            setOpenConfirmDialog(false);
+        }
         dispatch(getOrders(true));
     }
 
@@ -167,6 +174,10 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
 
     const handleCloseConfirmSnackbar = () => {
         setOpenConfirmSnackbar(false);
+    }
+
+    const handleCloseFailedSnackbar = () => {
+        setOpenFailedSnackbar(false);
     }
 
     useEffect(() => {
@@ -229,6 +240,12 @@ const RenderCell = ({ orderId }: RenderCellProps) => {
             <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openConfirmSnackbar} autoHideDuration={2000} onClose={handleCloseConfirmSnackbar}>
                 <Alert onClose={handleCloseConfirmSnackbar} severity="success" sx={{ width: "100%" }}>
                     Xác nhận đơn hàng thành công
+                </Alert>
+            </Snackbar>
+
+            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openFailedSnackbar} autoHideDuration={2000} onClose={handleCloseFailedSnackbar}>
+                <Alert onClose={handleCloseFailedSnackbar} severity="error" sx={{ width: "100%" }}>
+                    Không thể xác nhận đơn hàng do không đủ số lượng sản phẩm
                 </Alert>
             </Snackbar>
 

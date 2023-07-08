@@ -22,6 +22,8 @@ import Customer from '@/pages/Customer/customer'
 import Discount from '@/pages/Discount/discount'
 import Color from '@/pages/Color/color'
 import Supplier from '@/pages/Supplier/supplier'
+import Category from '@/pages/Category/category'
+import Subcategory from '@/pages/Subcategory/subcategory'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -91,6 +93,8 @@ const App = () => {
                                         <Route path="discount" element={<Discount />} />
                                         <Route path="color" element={<Color />} />
                                         <Route path="supplier" element={<Supplier />} />
+                                        <Route path="category" element={<Category />} />
+                                        <Route path="subcategory" element={<Subcategory />} />
                                     </>
                                 )}
                                 <Route path="product" element={<Product />} />
