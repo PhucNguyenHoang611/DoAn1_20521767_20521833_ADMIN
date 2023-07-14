@@ -61,7 +61,7 @@ const EditItemModal = ({ itemIndex, isModalOpen, setIsModalOpen }: any) => {
 					backgroundColor: "white",
 					padding: "1.5rem",
 					width: "45%",
-					height: "75%",
+					height: "max-content",
 					overflowY: "auto" }}>
                         <Box width="100%" height="10%" display="flex" alignItems="center" justifyContent="space-between">
                             <Typography sx={{

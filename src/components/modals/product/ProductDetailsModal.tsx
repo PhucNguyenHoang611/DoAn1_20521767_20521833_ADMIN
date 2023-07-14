@@ -28,6 +28,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
     const [currentSubcategory, setCurrentSubcategory] = useState<any>(null);
     const [currentSupplier, setCurrentSupplier] = useState<any>(null);
     const [selectedColor, setSelectedColor] = useState<any>({ key: 0 });
+    const [colorQuantity, setColorQuantity] = useState(0);
     const [colorsList, setColorsList] = useState<any[]>([]);
     const [imageURLsList, setImageURLsList] = useState<any[]>([]);
     const [viewImage, setViewImage] = useState(false);
@@ -83,12 +84,14 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                 const col = await mainApi.get(
                     apiEndpoints.GET_COLOR(color.colorId),
                     apiEndpoints.getColorId(color.colorId)
-                )
+                );
 
                 tempArrayForColor = [
                     ...tempArrayForColor,
-                    { key: index, productColorId: color._id, colorDetails: col.data.data }
+                    { key: index, productColorId: color._id, productQuantity: color.productQuantity, colorDetails: col.data.data }
                 ];
+
+                if (index === 0) setColorQuantity(color.productQuantity);
             })
 			await Promise.all(prodImages);
 
@@ -436,7 +439,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                                         whiteSpace: "nowrap",
                                         textAlign: "right"
                                     }}>
-                                        Số lượng:
+                                        Số lượng còn:
                                 </Typography>
                             </Box>
                             <Box width="80%">
@@ -458,7 +461,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                                         whiteSpace: "nowrap",
                                         textAlign: "right"
                                     }}>
-                                        Đã bán:
+                                        Đã bán được:
                                 </Typography>
                             </Box>
                             <Box width="80%">
@@ -472,7 +475,7 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                             </Box>
                         </Box>
                         <Box width="100%" sx={{ borderBottom: "1px solid gray", mb: 2 }}></Box>
-                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 3 }}>
+                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
                             <Box width="10%" sx={{ mr: 7 }}>
                                 <Typography sx={{
                                         fontWeight: "medium",
@@ -485,10 +488,35 @@ const ProductDetailsModal = ({ productId, isModalOpen, setIsModalOpen }: any) =>
                             </Box>
                             <Box width="90%">
                                 {colorsList?.map((color: any, index: any) => (
-                                    <Tooltip key={index} title={color.colorDetails.colorName} onClick={() => setSelectedColor({ key: index })}>
+                                    <Tooltip key={index} title={color.colorDetails.colorName}
+                                        onClick={() => {
+                                            setSelectedColor({ key: index });
+                                            setColorQuantity(color.productQuantity);
+                                        }}>
                                         <IconButton size="large" sx={{ border: "1px solid gray", backgroundColor: color.colorDetails.colorHex, mr: 2 }} />
                                     </Tooltip>
                                 ))}
+                            </Box>
+                        </Box>
+                        <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 3 }}>
+                            <Box width="30%" sx={{ mr: 4 }}>
+                                <Typography sx={{
+                                        fontWeight: "medium",
+                                        fontSize: "1.1rem",
+                                        color: "black",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        Số lượng sản phẩm thuộc màu này:
+                                </Typography>
+                            </Box>
+                            <Box width="70%">
+                                <Typography sx={{
+                                        fontSize: "1.1rem",
+                                        color: "black",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        {colorQuantity}
+                                </Typography>
                             </Box>
                         </Box>
                         <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 4 }}>
