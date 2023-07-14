@@ -4,34 +4,30 @@
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { mainApi } from '@/api/main_api'
+import { baseURL, mainApi } from '@/api/main_api'
 import * as apiEndpoints from '@/api/api_endpoints'
 import { DataGrid, GridCellParams, GridColDef, GridRowId } from "@mui/x-data-grid";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar, Tooltip, Typography } from "@mui/material";
 import { getAllCustomers } from "@/redux/reducers/auth_reducer";
-import { EyeIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
 import CustomerDetailsModal from "@/components/modals/customer/CustomerDetailsModal";
+import axios from "axios";
 
 const tableColumns: GridColDef[] = [
     {
         field: "id",
         headerName: "Mã khách hàng",
-        width: 210
+        width: 220
     },
     {
         field: "name",
         headerName: "Tên khách hàng",
-        width: 190
+        width: 200
     },
     {
         field: "email",
         headerName:"Email",
         width: 270
-    },
-    {
-        field: "gender",
-        headerName: "Giới tính",
-        width: 110
     },
     {
         field: "dob",
@@ -46,7 +42,7 @@ const tableColumns: GridColDef[] = [
     {
         field: "action",
         headerName: "",
-        width: 70,
+        width: 150,
         filterable: false,
         hideable: false,
         sortable: false,
@@ -58,16 +54,146 @@ interface RenderCellProps {
     customerId: GridRowId;
 }
 const RenderCell = ({ customerId }: RenderCellProps) => {
+    const dispatch = useDispatch();
     const [openCustomerDetailsModal, setOpenCustomerDetailsModal] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const [openActiveDialog, setOpenActiveDialog] = useState(false);
+    const [openActiveSnackbar, setOpenActiveSnackbar] = useState(false);
+    const [currentCustomer, setCurrentCustomer] = useState<any>(null);
+    const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+
+    const getCustomer = async () => {
+        try {
+            const customer = await mainApi.get(
+                apiEndpoints.GET_CUSTOMER(customerId.toString())
+            );
+
+            setCurrentCustomer(customer.data.data);
+        } catch (error: any) {
+            console.log(error);
+        }
+    }
+
+    const handleActiveInactiveCustomer = async (action: string) => {
+        try {
+            await axios({
+                method: "PUT",
+                url: `${baseURL}/customers/activeOrInactiveCustomer/${customerId.toString()}`,
+                headers: {
+                    Authorization: "Bearer " + currentUser.token
+                }
+            });
+
+            const listCustomers = await mainApi.get(
+                apiEndpoints.GET_ALL_CUSTOMERS,
+                apiEndpoints.getAccessToken(currentUser.token)
+            );
+
+            dispatch(getAllCustomers(listCustomers.data.data));
+            getCustomer();
+        } catch (error: any) {
+            console.log(error);
+        }
+
+        if (action === "Inactive") {
+            setOpenSnackbar(true);
+            setOpenDialog(false);
+        } else if (action === "Active") {
+            setOpenActiveSnackbar(true);
+            setOpenActiveDialog(false);
+        }
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    }
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
+    }
+
+    const handleCloseActiveDialog = () => {
+        setOpenActiveDialog(false);
+    }
+
+    const handleCloseActiveSnackbar = () => {
+        setOpenActiveSnackbar(false);
+    }
+
+    useEffect(() => {
+        if (!currentCustomer) getCustomer();
+    }, [customerId]);
 
     return (
         <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
             <Tooltip title="Chi tiết">
-                <IconButton size="small" sx={{ backgroundColor: "#32435F", mx: 3 }} onClick={() => setOpenCustomerDetailsModal(true)}>
+                <IconButton size="small" sx={{ backgroundColor: "#32435F", mr: 3 }} onClick={() => setOpenCustomerDetailsModal(true)}>
                     <EyeIcon className="w-5 h-5 text-white" />
                 </IconButton>
             </Tooltip>
+            {currentCustomer?.isActive ? (
+                <Tooltip title="Vô hiệu hóa">
+                    <IconButton size="small" sx={{ backgroundColor: "#DE5656" }} onClick={() => setOpenDialog(true)}>
+                        <LockClosedIcon className="w-5 h-5 text-white" />
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <Tooltip title="Kích hoạt">
+                    <IconButton size="small" sx={{ backgroundColor: "#A67F78" }} onClick={() => setOpenActiveDialog(true)}>
+                        <LockOpenIcon className="w-5 h-5 text-white" />
+                    </IconButton>
+                </Tooltip>
+            )}
+            
             <CustomerDetailsModal customerId={customerId} isModalOpen={openCustomerDetailsModal} setIsModalOpen={setOpenCustomerDetailsModal} />
+
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="dialog-title">
+                    <DialogTitle id="dialog-title">
+                        Vô hiệu hóa tài khoản
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ whiteSpace: "nowrap" }}>
+                            Bạn có chắc chắn muốn vô hiệu hóa tài khoản của khách hàng này ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog}>Hủy bỏ</Button>
+                        <Button onClick={() => handleActiveInactiveCustomer("Inactive")}>Xác nhận</Button>
+                    </DialogActions>
+            </Dialog>
+            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+                    Vô hiệu hóa thành công
+                </Alert>
+            </Snackbar>
+
+            <Dialog
+                open={openActiveDialog}
+                onClose={handleCloseActiveDialog}
+                aria-labelledby="dialog-title">
+                    <DialogTitle id="dialog-title">
+                        Kích hoạt tài khoản ?
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText sx={{ whiteSpace: "nowrap" }}>
+                            Bạn có chắc chắn muốn kích hoạt lại tài khoản của khách hàng này ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseActiveDialog}>Hủy bỏ</Button>
+                        <Button onClick={() => handleActiveInactiveCustomer("Active")}>Xác nhận</Button>
+                    </DialogActions>
+            </Dialog>
+            <Snackbar anchorOrigin={{ vertical: "top", horizontal: "left" }} open={openActiveSnackbar} autoHideDuration={2000} onClose={handleCloseActiveSnackbar}>
+                <Alert onClose={handleCloseActiveSnackbar} severity="success" sx={{ width: "100%" }}>
+                    Kích hoạt thành công
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
@@ -110,7 +236,6 @@ const Customer = () => {
                     id: customer._id,
                     name: customer.customerLastName + " " + customer.customerFirstName,
                     email: customer.customerEmail,
-                    gender: customer.customerGender,
                     dob: new Date(customer.customerBirthday).toLocaleDateString(),
                     city: city ? city : ""
                 };

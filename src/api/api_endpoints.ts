@@ -63,6 +63,8 @@ export const GET_ALL_CUSTOMERS = "/customers/getAllCustomers";
 
 export const GET_CUSTOMER = (id: string) => `/customers/getCustomerById/${id}`;
 
+export const ACTIVE_INACTIVE_CUSTOMER = (id: string) => `/customers/activeOrInactiveCustomer/${id}`
+
 // Customer Address
 export const GET_CUSTOMER_ADDRESS = (id: string) => `/addresses/getAddressById/${id}`;
 
