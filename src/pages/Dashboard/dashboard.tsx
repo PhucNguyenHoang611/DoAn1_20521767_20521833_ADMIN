@@ -111,8 +111,12 @@ const Dashboard = () => {
             );
 
             const result = (revenueThisMonth.data.revenue / (revenueThisMonth.data.revenue + importTotalPriceThisMonth.data.total)) * 100; 
-
-            setExpenditureThisMonth(parseFloat((Math.round(result * 100) / 100).toFixed(2)));
+            
+            if (result)
+                setExpenditureThisMonth(parseFloat((Math.round(result * 100) / 100).toFixed(2)));
+            else
+                setExpenditureThisMonth(100);
+            
         } catch (error: any) {
             console.log(error);
         }
