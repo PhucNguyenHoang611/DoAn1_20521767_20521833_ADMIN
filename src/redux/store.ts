@@ -6,6 +6,7 @@ import subcategoryReducer from './reducers/subcategory_reducer'
 import supplierReducer from './reducers/supplier_reducer'
 import colorReducer from './reducers/color_reducer'
 import importReducer from './reducers/import_reducer'
+import feedbackProducer from './reducers/feedback_reducer';
 
 export const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
         subcategory: subcategoryReducer,
         supplier: supplierReducer,
         color: colorReducer,
-        import: importReducer
+        import: importReducer,
+        feedback: feedbackProducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

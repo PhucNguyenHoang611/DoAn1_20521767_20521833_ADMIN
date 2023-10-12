@@ -18,7 +18,8 @@ import {
     SparklesIcon,
     TruckIcon, 
     ArchiveBoxIcon,
-    HomeModernIcon} from '@heroicons/react/24/outline'
+    HomeModernIcon,
+    EyeDropperIcon} from '@heroicons/react/24/outline'
 
 interface SideBarProps {
     currentUser: User;
@@ -190,18 +191,32 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                             )}
                         </SubMenu>
                         {(currentUser.privilege !== 2) && (
-                            <MenuItem
-                                active={location.pathname === "/order"}
-                                component={<Link to="/order" />}
-                                icon={<ShoppingCartIcon className="h-7 w-7 text-secondary-0" />}
-                                style={{ textAlign: "center" }}>
-                                <Typography variant="h6" sx={{
-                                    color: "#716864",
-                                    fontWeight: "normal"
-                                }}>
-                                    Đơn hàng
-                                </Typography>
-                            </MenuItem>
+                            <>
+                                <MenuItem
+                                    active={location.pathname === "/order"}
+                                    component={<Link to="/order" />}
+                                    icon={<ShoppingCartIcon className="h-7 w-7 text-secondary-0" />}
+                                    style={{ textAlign: "center" }}>
+                                    <Typography variant="h6" sx={{
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Đơn hàng
+                                    </Typography>
+                                </MenuItem>
+                                <MenuItem
+                                    active={location.pathname === "/feedback"}
+                                    component={<Link to="/feedback" />}
+                                    icon={<SparklesIcon className="h-7 w-7 text-secondary-0" />}
+                                    style={{ textAlign: "center" }}>
+                                    <Typography variant="h6" sx={{
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Đánh giá
+                                    </Typography>
+                                </MenuItem>
+                            </>
                         )}
                         {menuList.map((data) => (
                             <Item
@@ -248,7 +263,7 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                 <MenuItem
                                     active={location.pathname === "/color"}
                                     component={<Link to="/color" />}
-                                    icon={<SparklesIcon className="h-7 w-7 text-secondary-0" />}
+                                    icon={<EyeDropperIcon className="h-7 w-7 text-secondary-0" />}
                                     style={{ textAlign: "center", backgroundColor: "#F5F3F2" }}>
                                     <Typography variant="h6" sx={{
                                         color: "#716864",
