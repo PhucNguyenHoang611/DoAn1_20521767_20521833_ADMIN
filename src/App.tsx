@@ -24,6 +24,7 @@ import Color from '@/pages/Color/color'
 import Supplier from '@/pages/Supplier/supplier'
 import Category from '@/pages/Category/category'
 import Subcategory from '@/pages/Subcategory/subcategory'
+import Feedback from '@/pages/Feedback/feedback'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -102,7 +103,10 @@ const App = () => {
                                     <Route path="import" element={<Import />} />
                                 )}
                                 {(currentUser.privilege !== 2) && (
-                                    <Route path="order" element={<Order />} />
+                                    <>
+                                        <Route path="order" element={<Order />} />
+                                        <Route path="feedback" element={<Feedback />} />
+                                    </>
                                 )}
                             </>
                         )}
