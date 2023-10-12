@@ -297,6 +297,19 @@ export const getCompleteOrderBody = (orderCompleteDay: Date) => ({
     orderCompleteDay: orderCompleteDay
 });
 
+// Feedback
+export const GET_ALL_FEEDBACKS = "/feedbacks/getAllFeedbacks";
+
+export const GET_FEEDBACK = (id: string) => `/feedbacks/getFeedbackById/${id}`;
+
+export const GET_ALL_FEEDBACK_IMAGES = (id: string) => `/feedbacks/getAllFeedbackImageURLs/${id}`;
+
+export const RESPOND_TO_FEEDBACK = (id: string) => `/feedbacks/respondToFeedback/${id}`;
+
+export const getRespondToFeedbackBody = (feedbackResponse: string) => ({
+    feedbackResponse: feedbackResponse
+})
+
 // Payment
 
 export const GET_PAYMENT = (id: string) => `/payments/getPaymentById/${id}`;
