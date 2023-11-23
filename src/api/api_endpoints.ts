@@ -308,17 +308,15 @@ export const RESPOND_TO_FEEDBACK = (id: string) => `/feedbacks/respondToFeedback
 
 export const getRespondToFeedbackBody = (feedbackResponse: string) => ({
     feedbackResponse: feedbackResponse
-})
+});
 
 // Payment
-
 export const GET_PAYMENT = (id: string) => `/payments/getPaymentById/${id}`;
 
 // Attachment
 export const PREVIEW_ATTACHMENT = (id: string) => `/attachments/previewAttachment/${id}`;
 
 // Statistic
-
 export const COUNT_NEW_CUSTOMERS = "/statistics/countNewCustomers";
 
 export const COUNT_NEW_ORDERS_OF_MONTH = "/statistics/countNewOrdersOfMonth";
@@ -334,3 +332,35 @@ export const GET_REVENUE_OF_LAST_MONTH = "/statistics/getRevenueOfLastMonth";
 export const GET_ORDER_PER_MONTH = (year: number) => `/statistics/getOrderPerMonth/${year}`;
 
 export const GET_REVENUE_PER_MONTH = (year: number) => `/statistics/getRevenuePerMonth/${year}`;
+
+// Blog Post
+export const GET_ALL_BLOG_POSTS = "/posts/getAllBlogPosts";
+
+export const GET_BLOG_POST = (id: string) => `/posts/getBlogPostById/${id}`;
+
+export const CREATE_BLOG_POST = "/posts/createBlogPost";
+
+export const getCreateBlogPostBody = (blogPostTitle: string, blogPostAuthor: string, blogPostTag: string, blogPostDescription: string, blogPostContent: string) => ({
+    blogPostTitle: blogPostTitle,
+    blogPostAuthor: blogPostAuthor,
+    blogPostTag: blogPostTag,
+    blogPostDescription: blogPostDescription,
+    blogPostContent: blogPostContent
+});
+
+export const SAVE_BLOG_POST_THUMBNAIL = (id: string) => `/posts/saveBlogPostThumbnail/${id}`;
+
+export const UPLOAD_BLOG_POST_IMAGE = "/posts/uploadBlogPostImage";
+
+export const UPDATE_BLOG_POST = (id: string) => `/posts/updateBlogPost/${id}`;
+
+export const getUpdateBlogPostBody = (blogPostTitle: string, blogPostTag: string, blogPostDescription: string, blogPostContent: string) => ({
+    blogPostTitle: blogPostTitle,
+    blogPostTag: blogPostTag,
+    blogPostDescription: blogPostDescription,
+    blogPostContent: blogPostContent
+});
+
+export const HIDE_OR_UNHIDE_BLOG_POST = (id: string) => `/posts/hideOrUnhideBlogPost/${id}`;
+
+export const DELETE_BLOG_POST = (id: string) => `/posts/deleteBlogPost/${id}`;

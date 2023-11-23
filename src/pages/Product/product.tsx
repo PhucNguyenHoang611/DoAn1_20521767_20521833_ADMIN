@@ -117,7 +117,6 @@ const RenderCell = ({ productId }: RenderCellProps) => {
         setOpenSnackbar(false);
     }
 
-
     const handleCloseEditSnackbar = () => {
         setOpenEditSnackbar(false);
     }
