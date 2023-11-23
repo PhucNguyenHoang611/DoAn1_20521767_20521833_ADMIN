@@ -25,6 +25,7 @@ import Supplier from '@/pages/Supplier/supplier'
 import Category from '@/pages/Category/category'
 import Subcategory from '@/pages/Subcategory/subcategory'
 import Feedback from '@/pages/Feedback/feedback'
+import BlogPost from '@/pages/BlogPost/blogpost'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -96,6 +97,7 @@ const App = () => {
                                         <Route path="supplier" element={<Supplier />} />
                                         <Route path="category" element={<Category />} />
                                         <Route path="subcategory" element={<Subcategory />} />
+                                        <Route path="blog_post" element={<BlogPost />} />
                                     </>
                                 )}
                                 <Route path="product" element={<Product />} />

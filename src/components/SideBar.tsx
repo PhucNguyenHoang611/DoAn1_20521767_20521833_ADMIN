@@ -19,7 +19,8 @@ import {
     TruckIcon, 
     ArchiveBoxIcon,
     HomeModernIcon,
-    EyeDropperIcon} from '@heroicons/react/24/outline'
+    EyeDropperIcon,
+    NewspaperIcon} from '@heroicons/react/24/outline'
 
 interface SideBarProps {
     currentUser: User;
@@ -83,6 +84,12 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                             title: "Giảm giá",
                             to: "/discount",
                             icon: <ReceiptPercentIcon className="h-7 w-7 text-secondary-0" />
+                        },
+                        {
+                            key: "4",
+                            title: "Bài viết",
+                            to: "/blog_post",
+                            icon: <NewspaperIcon className="h-7 w-7 text-secondary-0" />
                         }
                     ]);
                     break;
