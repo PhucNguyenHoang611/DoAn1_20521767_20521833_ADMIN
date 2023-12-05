@@ -229,6 +229,8 @@ export const GET_DISCOUNT = (id: string) => `/discounts/getDiscountById/${id}`;
 
 export const CREATE_DISCOUNT = "/discounts/createDiscount";
 
+export const SAVE_DISCOUNT_THUMBNAIL = (id: string) => `/discounts/saveDiscountThumbnail/${id}`;
+
 export const UPDATE_DISCOUNT = (id: string) => `/discounts/updateDiscount/${id}`;
 
 export const DELETE_DISCOUNT = (id: string) => `/discounts/deleteDiscount/${id}`;
