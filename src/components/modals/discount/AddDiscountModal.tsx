@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { getAllDiscounts } from "@/redux/reducers/auth_reducer";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import PostThumbnailUploader from "@/components/blogpost/PostThumbnailUploader";
 
 const AddDiscountModal = ({ token, isModalOpen, setIsModalOpen, setOpenSnackbar }: any) => {
     const dispatch = useDispatch();
@@ -17,26 +18,47 @@ const AddDiscountModal = ({ token, isModalOpen, setIsModalOpen, setOpenSnackbar 
     const [startDate, setStartDate] = useState<any>(null);
     const [endDate, setEndDate] = useState<any>(null);
 
+    const [filesList, setFilesList] = useState<any[]>([]);
+    const [thumbnailError, setThumbnailError] = useState(false);
+
     const handleAddDiscount: SubmitHandler<any> = async (data) => {
         const now = new Date();
-        if (startDate < now) {
-            setError("discountStartDate", { message: "Ngày bắt đầu không phù hợp" });
+
+        if (startDate >= endDate) {
+            setError("discountStartDate", { message: "Ngày bắt đầu không được lớn hơn ngày kết thúc" });
             return;
         }
 
-        if (startDate > endDate) {
+        if (endDate <= now) {
             setError("discountEndDate", { message: "Ngày kết thúc không phù hợp" });
             return;
         }
 
+        if (filesList.length == 0) {
+            setThumbnailError(true);
+            return;
+        } else
+            setThumbnailError(false);
+
         setOpenSnackbar(true);
         
         try {
-            await mainApi.post(
+            const discount = await mainApi.post(
                 apiEndpoints.CREATE_DISCOUNT,
                 apiEndpoints.getDiscountBody(data.discountName, data.discountDescription, data.discountPercent, startDate, endDate),
                 apiEndpoints.getAccessToken(token)
             );
+
+            filesList.map(async (file: any) => {
+                const formData = new FormData();
+                formData.append("Files[]", file.originFileObj);
+
+                await mainApi.post(
+                    apiEndpoints.SAVE_DISCOUNT_THUMBNAIL(discount.data.data._id),
+                    formData,
+                    apiEndpoints.getAccessToken(token)
+                );
+            })
 
             const listDiscounts = await mainApi.get(
                 apiEndpoints.GET_ALL_DISCOUNTS
@@ -61,6 +83,9 @@ const AddDiscountModal = ({ token, isModalOpen, setIsModalOpen, setOpenSnackbar 
 
         setError("discountStartDate", { message: "" });
         setError("discountEndDate", { message: "" });
+
+        setThumbnailError(false);
+        setFilesList([]);
 	};
 
     return (
@@ -115,7 +140,7 @@ const AddDiscountModal = ({ token, isModalOpen, setIsModalOpen, setOpenSnackbar 
                             </Box>
 
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <Box width="100%" display="flex">
+                                <Box width="100%" display="flex" sx={{ mb: 2 }}>
                                     {/* Ngày bắt đầu */}
                                     <Box width="50%" sx={{ mr: 1 }}>
                                         <DateTimePicker
@@ -149,6 +174,19 @@ const AddDiscountModal = ({ token, isModalOpen, setIsModalOpen, setOpenSnackbar 
                                     </Box>
                                 </Box>
                             </LocalizationProvider>
+
+                            <Box width="100%" height="100%" display="flex" justifyContent="start" alignItems="center">
+                                <Typography className="whitespace-nowrap" sx={{ fontSize: "0.8rem", fontWeight: "medium" }}>
+                                    THUMBNAIL:
+                                </Typography>
+
+                                <Box display="flex" flexDirection="column">
+                                    <PostThumbnailUploader setFilesList={setFilesList} />
+                                    {thumbnailError ? (
+                                        <p className="text-red-700 text-base mb-4 ml-4">Hãy chọn thumbnail cho bài viết</p>
+                                    ) : null}
+                                </Box>
+                            </Box>
 
                             <Box width="100%" display="flex" justifyContent="end" alignItems="center" sx={{ my: 2 }}>
 								<button type="button" onClick={handleClose} className="bg-white text-lg text-primary-0 border-2 border-primary-0 rounded-sm p-2">Hủy bỏ</button>
