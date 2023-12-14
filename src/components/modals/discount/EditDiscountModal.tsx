@@ -36,12 +36,13 @@ const EditDiscountModal = ({ token, discountId, isModalOpen, setIsModalOpen, set
 
     const handleEditDiscount = async () => {
         const now = new Date();
-        if (new Date(currentDiscount.discountStartDate) < now) {
-            setError("discountStartDate", { message: "Ngày bắt đầu không phù hợp" });
+
+        if (new Date(currentDiscount.discountStartDate) >= new Date(currentDiscount.discountEndDate)) {
+            setError("discountStartDate", { message: "Ngày bắt đầu không được lớn hơn ngày kết thúc" });
             return;
         }
 
-        if (new Date(currentDiscount.discountStartDate) > new Date(currentDiscount.discountEndDate)) {
+        if (new Date(currentDiscount.discountEndDate) <= now) {
             setError("discountEndDate", { message: "Ngày kết thúc không phù hợp" });
             return;
         }
