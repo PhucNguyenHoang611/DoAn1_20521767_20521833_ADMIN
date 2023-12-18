@@ -65,6 +65,8 @@ export const GET_CUSTOMER = (id: string) => `/customers/getCustomerById/${id}`;
 
 export const ACTIVE_INACTIVE_CUSTOMER = (id: string) => `/customers/activeOrInactiveCustomer/${id}`
 
+export const GET_CUSTOMER_AVATAR = (id: string) => `/customers/getCustomerAvatarURLById/${id}`;
+
 // Customer Address
 export const GET_CUSTOMER_ADDRESS = (id: string) => `/addresses/getAddressById/${id}`;
 
@@ -366,3 +368,19 @@ export const getUpdateBlogPostBody = (blogPostTitle: string, blogPostTag: string
 export const HIDE_OR_UNHIDE_BLOG_POST = (id: string) => `/posts/hideOrUnhideBlogPost/${id}`;
 
 export const DELETE_BLOG_POST = (id: string) => `/posts/deleteBlogPost/${id}`;
+
+// Conversation
+export const GET_ALL_CONVERSATIONS = "/conversations/getAllConversations";
+
+export const GET_CONVERSATION = (id: string) => `/conversations/getConversationById/${id}`;
+
+// Message
+export const GET_ALL_MESSAGES = (id: string) => `/messages/getAllMessagesForConversation/${id}`;
+
+export const CREATE_MESSAGE = "/messages/createMessage";
+
+export const getCreateMessageBody = (conversationId: string, senderId: string, messageText: string) => ({
+    conversationId: conversationId,
+    senderId: senderId,
+    messageText: messageText
+});

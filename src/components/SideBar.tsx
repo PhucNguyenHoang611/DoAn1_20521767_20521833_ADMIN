@@ -20,7 +20,8 @@ import {
     ArchiveBoxIcon,
     HomeModernIcon,
     EyeDropperIcon,
-    NewspaperIcon} from '@heroicons/react/24/outline'
+    NewspaperIcon,
+    ChatBubbleLeftRightIcon} from '@heroicons/react/24/outline'
 
 interface SideBarProps {
     currentUser: User;
@@ -209,6 +210,18 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                                         fontWeight: "normal"
                                     }}>
                                         Đơn hàng
+                                    </Typography>
+                                </MenuItem>
+                                <MenuItem
+                                    active={location.pathname === "/chat"}
+                                    component={<Link to="/chat" />}
+                                    icon={<ChatBubbleLeftRightIcon className="h-7 w-7 text-secondary-0" />}
+                                    style={{ textAlign: "center" }}>
+                                    <Typography variant="h6" sx={{
+                                        color: "#716864",
+                                        fontWeight: "normal"
+                                    }}>
+                                        Tin nhắn
                                     </Typography>
                                 </MenuItem>
                                 <MenuItem
