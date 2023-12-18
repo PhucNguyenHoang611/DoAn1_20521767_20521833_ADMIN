@@ -15,9 +15,12 @@ export interface ConversationItem {
     customerFirstName: string;
     customerLastName: string;
     customerAvatar: string;
+    unreadCounter: number;
+    lastSenderId: string;
+    lastMessageText: string;
 }
 
-const ConversationsList = ({ currentUser, currentConversation, setCurrentConversation }: any) => {
+const ConversationsList = ({ outgoingMessage, arrivalMessage, currentUser, currentConversation, setCurrentConversation }: any) => {
     const [allConversations, setAllConversations] = useState<ConversationItem[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -37,6 +40,14 @@ const ConversationsList = ({ currentUser, currentConversation, setCurrentConvers
 
                 const customer = await mainApi.get(
                     apiEndpoints.GET_CUSTOMER(conversation.customerId)
+                );
+
+                const lastMessage = await mainApi.get(
+                    apiEndpoints.GET_LAST_MESSAGE(conversation._id)
+                );
+
+                const unreadMessages = await mainApi.get(
+                    apiEndpoints.GET_NUMBER_OF_UNREAD_MESSAGES(conversation._id, conversation.customerId)
                 );
 
                 let avatarUrl = "";
@@ -60,7 +71,10 @@ const ConversationsList = ({ currentUser, currentConversation, setCurrentConvers
                     customerEmail: customer.data.data.customerEmail,
                     customerFirstName: customer.data.data.customerFirstName,
                     customerLastName: customer.data.data.customerLastName,
-                    customerAvatar: avatarUrl
+                    customerAvatar: avatarUrl,
+                    unreadCounter: unreadMessages.data.data,
+                    lastSenderId: lastMessage.data.data ? lastMessage.data.data.senderId : "",
+                    lastMessageText: lastMessage.data.data ? lastMessage.data.data.messageText : ""
                 };
 
                 result.push(item);
@@ -84,6 +98,59 @@ const ConversationsList = ({ currentUser, currentConversation, setCurrentConvers
         }
     }, [currentUser]);
 
+    useEffect(() => {
+        if (outgoingMessage.conversationId != "") {
+            const newArray: ConversationItem[] = allConversations.map((item: ConversationItem) => {
+                if (item.conversationId == outgoingMessage.conversationId) {
+                    return {
+                        ...item,
+                        lastSenderId: outgoingMessage.senderId,
+                        lastMessageText: outgoingMessage.messageText
+                    };
+                }
+
+                return item;
+            });
+
+            setAllConversations(newArray);
+        }
+    }, [outgoingMessage]);
+
+    useEffect(() => {
+        if (arrivalMessage.conversationId != "") {
+            const newArray: ConversationItem[] = allConversations.map((item: ConversationItem) => {
+                if (item.conversationId == arrivalMessage.conversationId) {
+                    return {
+                        ...item,
+                        lastSenderId: arrivalMessage.senderId,
+                        lastMessageText: arrivalMessage.messageText
+                    };
+                }
+
+                return item;
+            });
+
+            setAllConversations(newArray);
+        }
+    }, [arrivalMessage]);
+
+    useEffect(() => {
+        if (currentConversation.conversationId != "") {
+            const newArray: ConversationItem[] = allConversations.map((item: ConversationItem) => {
+                if (item.conversationId == currentConversation.conversationId) {
+                    return {
+                        ...item,
+                        unreadCounter: 0
+                    };
+                }
+
+                return item;
+            });
+
+            setAllConversations(newArray);
+        }
+    }, [currentConversation]);
+
     return (
         <Box width="100%" height="100%" className="overflow-hidden">
             <Box width="100%" height="10%" display="flex" justifyContent="center" alignItems="center">
@@ -104,9 +171,9 @@ const ConversationsList = ({ currentUser, currentConversation, setCurrentConvers
                             key={index}
                             className="cursor-pointer"
                             name={item.customerLastName + " " + item.customerFirstName}
-                            lastSenderName={item.customerFirstName}
-                            info="Hello my best friend, come to my house at 5 o'clock !"
-                            unreadCnt={9999}
+                            lastSenderName={item.lastSenderId === item.customerId ? item.customerFirstName : false}
+                            info={item.lastMessageText}
+                            unreadCnt={item.unreadCounter}
                             active={item.conversationId === currentConversation.conversationId}
                             onClick={() => handleChangeConversation(item)}>
                                 <Avatar
