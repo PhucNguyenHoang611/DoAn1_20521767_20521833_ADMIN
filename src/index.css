@@ -63,3 +63,44 @@ body,
     background-color: #716864;
     border-radius: 10px;
 }
+
+/* Chat UI kit React */
+.cs-conversation:hover {
+    background-color: #F2EDEC;
+}
+.cs-conversation.cs-conversation--active {
+    background-color: #DFD1CF;
+
+}
+.cs-conversation.cs-conversation--active .cs-conversation__name,
+.cs-conversation.cs-conversation--active .cs-conversation__info {
+    color: black;
+}
+.cs-conversation.cs-conversation--active .cs-conversation__name {
+    font-weight: 500;
+}
+
+.cs-conversation-header,
+.cs-conversation-header .cs-conversation-header__user-name,
+.cs-message-input__content-editor-wrapper,
+.cs-message-input__content-editor {
+    background-color: white;
+}
+
+.outgoing-message .cs-message__content {
+    background-color: #886059;
+    color: white;
+    font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.incoming-message .cs-message__content {
+    background-color: white;
+    color: #886059;
+    font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    border: 2px solid #886059;
+}

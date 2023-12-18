@@ -26,6 +26,7 @@ import Category from '@/pages/Category/category'
 import Subcategory from '@/pages/Subcategory/subcategory'
 import Feedback from '@/pages/Feedback/feedback'
 import BlogPost from '@/pages/BlogPost/blogpost'
+import Chat from '@/pages/Chat/chat'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -108,6 +109,7 @@ const App = () => {
                                     <>
                                         <Route path="order" element={<Order />} />
                                         <Route path="feedback" element={<Feedback />} />
+                                        <Route path="chat" element={<Chat />} />
                                     </>
                                 )}
                             </>
