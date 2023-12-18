@@ -5,3 +5,4 @@ export const mainApi = axios.create({
 });
 
 export const baseURL = "https://nguyenshomefurniture-be.onrender.com/api";
+export const hostURL = "https://nguyenshomefurniture-be.onrender.com"
