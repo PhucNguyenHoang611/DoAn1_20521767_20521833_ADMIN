@@ -384,3 +384,7 @@ export const getCreateMessageBody = (conversationId: string, senderId: string, m
     senderId: senderId,
     messageText: messageText
 });
+
+export const GET_NUMBER_OF_UNREAD_MESSAGES = (id: string, senderId: string) => `/messages/getNumberOfUnreadMessages/${id}/${senderId}`;
+
+export const GET_LAST_MESSAGE = (id: string) => `/messages/getLastMessageForConversation/${id}`;

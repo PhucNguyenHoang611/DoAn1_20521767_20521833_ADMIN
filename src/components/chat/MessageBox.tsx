@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { mainApi } from '@/api/main_api'
+import { mainApi, baseURL } from '@/api/main_api'
 import * as apiEndpoints from '@/api/api_endpoints'
 import { Box, Typography } from '@mui/material';
 
@@ -8,24 +8,26 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css'
 import { Avatar, ChatContainer, ConversationHeader, InfoButton, Message, MessageInput, MessageList } from '@chatscope/chat-ui-kit-react';
 import { useEffect, useState } from 'react';
 import CustomerDetailsModal from '../modals/customer/CustomerDetailsModal';
+import axios from 'axios';
 
-interface MessageItem {
+export interface MessageItem {
     conversationId: string;
     senderId: string;
     messageText: string;
     messageSentDate: Date;
 }
 
-const MessageBox = ({ socket, currentUser, currentConversation }: any) => {
+const MessageBox = ({ setOutgoingMessage, arrivalMessage, setArrivalMessage, socket, currentUser, currentConversation }: any) => {
     const [openDetailsModal, setOpenDetailsModal] = useState(false);
     const [allMessages, setAllMessages] = useState<MessageItem[]>([]);
 
-    const [arrivalMessage, setArrivalMessage] = useState<MessageItem>({
-        conversationId: "",
-        senderId: "",
-        messageText: "",
-        messageSentDate: new Date()
-    });
+    // const [arrivalMessage, setArrivalMessage] = useState<MessageItem>({
+    //     conversationId: "",
+    //     senderId: "",
+    //     messageText: "",
+    //     messageSentDate: new Date()
+    // });
+
     const [inputMessage, setInputMessage] = useState("");
 
     const getAllMessages = async () => {
@@ -55,6 +57,20 @@ const MessageBox = ({ socket, currentUser, currentConversation }: any) => {
         }
     }
 
+    const markAllMessagesAsRead = async () => {
+        try {
+            await axios({
+                method: "PUT",
+                url: `${baseURL}/messages/markAllMessagesAsRead/${currentConversation.conversationId}`,
+                headers: {
+                    Authorization: "Bearer " + currentUser.token
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleSendMessage = async () => {
         try {
             // Store message to database
@@ -69,6 +85,14 @@ const MessageBox = ({ socket, currentUser, currentConversation }: any) => {
                 senderId: "ADMIN-SOCKET",
                 receiverId: currentConversation.customerId,
                 messageText: inputMessage
+            });
+
+            // Set outgoing message
+            setOutgoingMessage({
+                conversationId: currentConversation.conversationId,
+                senderId: currentUser.id,
+                messageText: inputMessage,
+                messageSentDate: new Date()
             });
 
             // Update allMessages array
@@ -86,8 +110,10 @@ const MessageBox = ({ socket, currentUser, currentConversation }: any) => {
     }
 
     useEffect(() => {
-        if (currentConversation.conversationId !== "")
+        if (currentConversation.conversationId !== "") {
+            markAllMessagesAsRead();
             getAllMessages();
+        }
     }, [currentConversation]);
 
     useEffect(() => {
