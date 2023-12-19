@@ -185,10 +185,16 @@ const MessageBox = ({ setOutgoingMessage, arrivalMessage, setArrivalMessage, soc
                                                 message: item.messageText,
                                                 sentTime: item.messageSentDate.toLocaleDateString(),
                                                 direction: item.senderId === currentConversation.customerId ? "incoming" : "outgoing",
-                                                position: "single"
+                                                position: "normal"
                                             }}
-                                            className={item.senderId === currentConversation.customerId ? "incoming-message" : "outgoing-message"}>
-                                                {item.senderId === currentConversation.customerId && (
+                                            className={item.senderId === currentConversation.customerId ? "incoming-message" : "outgoing-message"}
+                                            avatarSpacer={
+                                                (item.senderId === currentConversation.customerId)
+                                                    && (item.senderId === allMessages[index + 1]?.senderId) ? true : false
+                                            }>
+                                                {(item.senderId === currentConversation.customerId)
+                                                    && (item.senderId !== allMessages[index + 1]?.senderId)
+                                                    && (
                                                     <Avatar
                                                         src={currentConversation.customerAvatar}
                                                         name={currentConversation.customerFirstName} />
