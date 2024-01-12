@@ -303,6 +303,11 @@ const Order = () => {
     const getTableRows = async (result: any) => {
         const rows = await Promise.all(
             result.map(async (ord: any) => {
+                let voucher = null;
+                if (ord.voucherId) {
+                    voucher = await getVoucher(ord.voucherId);
+                }
+
                 const customer = await getCustomer(ord.customerId);
                 const address = await getAddress(ord.orderAddress);
                 const ordItems = await getOrderItems(ord._id);
@@ -311,6 +316,20 @@ const Order = () => {
                     sum += item.productSalePrice
                 }));
                 sum += ord.orderShippingFee;
+
+                if (voucher) {
+                    if (voucher.voucherType === "MONEY") {
+                        sum -= voucher.voucherValue;
+                    } else {
+                        const max = voucher.maxDiscountPrice;
+                        const discount = sum * voucher.voucherValue / 100;
+                        if (discount > max) {
+                            sum -= max;
+                        } else {
+                            sum -= discount;
+                        }
+                    }
+                }
 
                 return {
                     id: ord._id,
@@ -326,6 +345,18 @@ const Order = () => {
         setTableRows(rows);
         setIsLoading(false);
         dispatch(getOrders(false));
+    }
+
+    const getVoucher = async (id: string) => {
+        try {
+            const voucher = await mainApi.get(
+                apiEndpoints.GET_VOUCHER(id)
+            );
+
+            return voucher.data.data;
+        } catch (error: any) {
+            console.log(error);
+        }
     }
 
     const getCustomer = async (id: string) => {

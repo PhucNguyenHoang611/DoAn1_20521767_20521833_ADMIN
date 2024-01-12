@@ -388,3 +388,30 @@ export const getCreateMessageBody = (conversationId: string, senderId: string, m
 export const GET_NUMBER_OF_UNREAD_MESSAGES = (id: string, senderId: string) => `/messages/getNumberOfUnreadMessages/${id}/${senderId}`;
 
 export const GET_LAST_MESSAGE = (id: string) => `/messages/getLastMessageForConversation/${id}`;
+
+// Voucher
+export const GET_ALL_VOUCHERS = "/vouchers/getAllVouchers";
+
+export const GET_VOUCHER = (id: string) => `/vouchers/getVoucherById/${id}`;
+
+export const CREATE_VOUCHER = "/vouchers/createVoucher";
+
+export const getCreateVoucherBody = (voucherType: string, voucherValue: number, minOrderPrice: number, maxDiscountPrice: number, voucherEndDate: Date) => ({
+    voucherType: voucherType,
+    voucherValue: voucherValue,
+    minOrderPrice: minOrderPrice,
+    maxDiscountPrice: maxDiscountPrice,
+    voucherEndDate: voucherEndDate
+});
+
+export const UPDATE_VOUCHER = (id: string) => `/vouchers/updateVoucher/${id}`;
+
+export const getUpdateVoucherBody = (voucherType: string, voucherValue: number, minOrderPrice: number, maxDiscountPrice: number, voucherEndDate: Date) => ({
+    voucherType: voucherType,
+    voucherValue: voucherValue,
+    minOrderPrice: minOrderPrice,
+    maxDiscountPrice: maxDiscountPrice,
+    voucherEndDate: voucherEndDate
+});
+
+export const DELETE_VOUCHER = (id: string) => `/vouchers/deleteVoucher/${id}`;

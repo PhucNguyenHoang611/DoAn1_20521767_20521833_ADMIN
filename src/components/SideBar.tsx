@@ -21,7 +21,8 @@ import {
     HomeModernIcon,
     EyeDropperIcon,
     NewspaperIcon,
-    ChatBubbleLeftRightIcon} from '@heroicons/react/24/outline'
+    ChatBubbleLeftRightIcon,
+    TicketIcon } from '@heroicons/react/24/outline'
 
 interface SideBarProps {
     currentUser: User;
@@ -88,6 +89,12 @@ const SideBar = ({ currentUser, isNonMobile, isSidebarOpen, setIsSidebarOpen }: 
                         },
                         {
                             key: "4",
+                            title: "Voucher",
+                            to: "/voucher",
+                            icon: <TicketIcon className="h-7 w-7 text-secondary-0" />
+                        },
+                        {
+                            key: "5",
                             title: "Bài viết",
                             to: "/blog_post",
                             icon: <NewspaperIcon className="h-7 w-7 text-secondary-0" />

@@ -54,7 +54,6 @@ export const getAllDiscounts = createAction<any>("GET_ALL_DISCOUNTS");
 export const getAllColors = createAction<any>("GET_ALL_COLORS");
 export const getAllSuppliers = createAction<any>("GET_ALL_SUPPLIERS");
 
-
 // Reducer
 const authReducer = createReducer(initialState, (builder) => {
     builder.addCase(login, (state, action) => {

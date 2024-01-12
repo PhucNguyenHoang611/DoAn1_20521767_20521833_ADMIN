@@ -48,6 +48,7 @@ const NoRowsOverlay = () => {
 
 const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalOpen }: any) => {
     const [customer, setCustomer] = useState<any>(null);
+    const [voucher, setVoucher] = useState<any>(null);
     const [address, setAddress] = useState<any>(null);
     const [staff, setStaff] = useState<any>(null);
     const [payment, setPayment] = useState<any>(null);
@@ -57,6 +58,17 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
     const [isLoading, setIsLoading] = useState(false);
     const getOrder = useSelector((state: RootState) => state.import.getOrder);
 
+    const getVoucher = async (id: string) => {
+        try {
+            const voucher = await mainApi.get(
+                apiEndpoints.GET_VOUCHER(id)
+            );
+
+            setVoucher(voucher.data.data);
+        } catch (error: any) {
+            console.log(error);
+        }
+    }
 
     const getCustomer = async () => {
         try {
@@ -146,6 +158,23 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
         setIsLoading(false);
     }
 
+    const getDiscountPrice = (total: number) => {
+        if (voucher) {
+            if (voucher.voucherType === "MONEY") {
+                return voucher.voucherValue;
+            } else {
+                const max = voucher.maxDiscountPrice;
+                const discount = total * voucher.voucherValue / 100;
+                if (discount > max) {
+                    return max;
+                } else {
+                    return discount;
+                }
+            }
+        } else
+            return 0;
+    }
+
     const getProduct = async (id: string) => {
         try {
             const prod = await mainApi.get(
@@ -176,18 +205,21 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
 
     useEffect(() => {
         if (isModalOpen) {
+            if (currentOrder?.voucherId)
+                getVoucher(currentOrder.voucherId);
+
             getCustomer();
             getAddress();
             getPayment();
 
-            if (currentOrder?.staffId) {
+            if (currentOrder?.staffId)
                 getStaff(currentOrder.staffId);
-            }
 
             getOrderItems(currentOrder?._id);
         } else {
             setTableRows([])
             setCustomer(null);
+            setVoucher(null);
             setAddress(null);
             setStaff(null);
             setPayment(null);
@@ -596,6 +628,33 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
                                     </Box>
                                 </Box>
 
+                                {voucher && (
+                                    <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 2 }}>
+                                        <Box width="20%" sx={{ mr: 4 }}>
+                                            <Typography sx={{
+                                                    fontWeight: "medium",
+                                                    fontSize: "1.1rem",
+                                                    color: "black",
+                                                    whiteSpace: "nowrap",
+                                                    textAlign: "right"
+                                                }}>
+                                                    Voucher:
+                                            </Typography>
+                                        </Box>
+                                        <Box width="80%">
+                                            <Typography sx={{
+                                                    fontSize: "1.1rem",
+                                                    color: "black",
+                                                    whiteSpace: "nowrap"
+                                                }}>
+                                                    {voucher.voucherType === "MONEY"
+                                                    ? voucher.voucherValue.toLocaleString("vi-VN", {style : "currency", currency : "VND"})
+                                                    : voucher.voucherValue + "%" + " (Giảm tối đa " + voucher.maxDiscountPrice.toLocaleString("vi-VN", {style : "currency", currency : "VND"}) + ")"}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                )}
+
                                 <Box width="100%" display="flex" justifyContent="center" alignItems="center" sx={{ mb: 4 }}>
                                     <Box width="100%">
                                         <DataGrid
@@ -636,7 +695,7 @@ const OrderDetailsModal = ({ currentUser, currentOrder, isModalOpen, setIsModalO
                                             whiteSpace: "nowrap",
                                             textAlign: "right"
                                         }}>
-                                            {(totalPrice + currentOrder?.orderShippingFee).toLocaleString("vi-VN", {style : "currency", currency : "VND"})}
+                                            {(totalPrice + currentOrder?.orderShippingFee - getDiscountPrice(totalPrice + currentOrder?.orderShippingFee)).toLocaleString("vi-VN", {style : "currency", currency : "VND"})}
                                     </Typography>
                                 </Box>
                             </Box>
