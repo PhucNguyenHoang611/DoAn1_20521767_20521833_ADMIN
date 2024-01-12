@@ -27,6 +27,7 @@ import Subcategory from '@/pages/Subcategory/subcategory'
 import Feedback from '@/pages/Feedback/feedback'
 import BlogPost from '@/pages/BlogPost/blogpost'
 import Chat from '@/pages/Chat/chat'
+import Voucher from '@/pages/Voucher/voucher'
 
 const App = () => {
     const dispatch = useDispatch();
@@ -94,6 +95,7 @@ const App = () => {
                                         <Route path="customer" element={<Customer />} />
                                         <Route path="staff" element={<Staff />} />
                                         <Route path="discount" element={<Discount />} />
+                                        <Route path="voucher" element={<Voucher />} />
                                         <Route path="color" element={<Color />} />
                                         <Route path="supplier" element={<Supplier />} />
                                         <Route path="category" element={<Category />} />

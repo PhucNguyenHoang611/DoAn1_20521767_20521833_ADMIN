@@ -8,6 +8,7 @@ import colorReducer from './reducers/color_reducer'
 import importReducer from './reducers/import_reducer'
 import feedbackProducer from './reducers/feedback_reducer';
 import blogPostReducer from './reducers/blog_post_reducer'
+import voucherReducer from './reducers/voucher_reducer'
 
 export const store = configureStore({
     reducer: {
@@ -19,7 +20,8 @@ export const store = configureStore({
         color: colorReducer,
         import: importReducer,
         feedback: feedbackProducer,
-        blogPost: blogPostReducer
+        blogPost: blogPostReducer,
+        voucher: voucherReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
